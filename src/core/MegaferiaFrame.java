@@ -16,6 +16,11 @@ import javax.swing.UIManager;
 public class MegaferiaFrame extends javax.swing.JFrame {
 
     private ArrayList<Stand> stands;
+    private ArrayList<Author> authors;
+    private ArrayList<Manager> managers;
+    private ArrayList<Narrator> narrators;
+    private ArrayList<Publisher> publishers;
+    private ArrayList<Book> books;
     
     /**
      * Creates new form MegaferiaFrame
@@ -23,6 +28,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     public MegaferiaFrame() {
         initComponents();
         this.stands = new ArrayList<>();
+        this.authors = new ArrayList<>();
+        this.managers = new ArrayList<>();
+        this.narrators = new ArrayList<>();
+        this.publishers = new ArrayList<>();
+        this.books = new ArrayList<>();
     }
 
     /**
@@ -50,6 +60,8 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jButton16 = new javax.swing.JButton();
+        jButton17 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
@@ -191,7 +203,12 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         });
 
         jButton2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jButton2.setText("Crear");
+        jButton2.setText("Crear Autor");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTextField5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jTextField5.setToolTipText("");
@@ -204,31 +221,52 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setText("Apellido");
 
+        jButton16.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        jButton16.setText("Crear Gerente");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+
+        jButton17.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        jButton17.setText("Crear Narrador");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(264, 264, 264)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(21, 21, 21)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(21, 21, 21)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(313, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(361, 361, 361))
+                        .addGap(264, 264, 264)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(21, 21, 21)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(21, 21, 21)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(162, 162, 162)
+                        .addComponent(jButton2)
+                        .addGap(56, 56, 56)
+                        .addComponent(jButton16)
+                        .addGap(54, 54, 54)
+                        .addComponent(jButton17)))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,15 +283,18 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(249, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Persona", jPanel3);
 
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jLabel6.setText("ID");
+        jLabel6.setText("NIT");
 
         jTextField6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jTextField6.setToolTipText("");
@@ -287,6 +328,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jButton3.setText("Crear");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel9.setText("Gerente");
@@ -316,7 +362,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(361, 361, 361)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(284, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,7 +421,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jLabel13.setText("Genero");
 
         jComboBox2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione uno..." }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione uno...", "Fantasía urbana", "Ciencia ficción distópica", "Realismo mágico", "Romance histórico", "Thriller psicológico", "Ficción filosófica", "Aventura steampunk", "Terror gótico", "No ficción narrativa", "Ficción postapocalíptica" }));
 
         jButton4.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jButton4.setText("Crear");
@@ -484,7 +530,8 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione uno..." }));
 
         jButton8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jButton8.setText("Agrgar Autor");
+        jButton8.setText("Agregar Autor");
+        jButton8.setActionCommand("Agregar Autor");
 
         jButton9.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jButton9.setText("Eliminar Autor");
@@ -492,6 +539,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jTextArea2.setColumns(20);
         jTextArea2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jTextArea2.setRows(5);
+        jTextArea2.setEnabled(false);
         jScrollPane2.setViewportView(jTextArea2);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -552,7 +600,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                                                     .addGap(18, 18, 18)
                                                     .addComponent(jRadioButton2)))
                                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                                                .addComponent(jTextField9)
                                                 .addComponent(jTextField11)
                                                 .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -562,7 +610,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                                             .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(18, 18, 18)
-                                        .addComponent(jScrollPane2))))
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE))))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -659,7 +707,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jLabel24.setText("ID Stands");
 
         jButton5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jButton5.setText("Agrgar Editorial");
+        jButton5.setText("Agregar Editorial");
 
         jButton6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jButton6.setText("Crear");
@@ -670,10 +718,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jTextArea1.setRows(5);
+        jTextArea1.setEnabled(false);
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton10.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jButton10.setText("Agrgar Stand");
+        jButton10.setText("Agregar Stand");
 
         jButton11.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jButton11.setText("Eliminar Stand");
@@ -681,6 +730,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jTextArea3.setColumns(20);
         jTextArea3.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jTextArea3.setRows(5);
+        jTextArea3.setEnabled(false);
         jScrollPane3.setViewportView(jTextArea3);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -688,7 +738,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jButton6)
@@ -749,7 +799,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                 .addGap(59, 59, 59))
         );
 
-        jTabbedPane1.addTab("Comprar stand", jPanel6);
+        jTabbedPane1.addTab("Comprar Stand", jPanel6);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -787,7 +837,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(361, 361, 361)
                         .addComponent(jButton12)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -837,7 +887,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(361, 361, 361)
                         .addComponent(jButton13)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -887,7 +937,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(361, 361, 361)
                         .addComponent(jButton14)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -948,7 +998,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addGap(18, 18, 18)
                         .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -970,7 +1020,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1093,8 +1143,64 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         long id = Long.parseLong(jTextField2.getText());
         double price = Double.parseDouble(jTextField1.getText());
         
-        stands.add(new Stand(id, price));
+        this.stands.add(new Stand(id, price));
+        
+        jComboBox7.addItem("" + id);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        long id = Long.parseLong(jTextField3.getText());
+        String firstname = jTextField4.getText();
+        String lastname = jTextField5.getText();
+        
+        this.authors.add(new Author(id, firstname, lastname));
+        
+        jComboBox3.addItem(id + " - " + firstname + " " + lastname);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+        long id = Long.parseLong(jTextField3.getText());
+        String firstname = jTextField4.getText();
+        String lastname = jTextField5.getText();
+        
+        this.managers.add(new Manager(id, firstname, lastname));
+        
+        jComboBox1.addItem(id + " - " + firstname + " " + lastname);
+    }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        // TODO add your handling code here:
+        long id = Long.parseLong(jTextField3.getText());
+        String firstname = jTextField4.getText();
+        String lastname = jTextField5.getText();
+        
+        this.narrators.add(new Narrator(id, firstname, lastname));
+        
+        jComboBox6.addItem(id + " - " + firstname + " " + lastname);
+    }//GEN-LAST:event_jButton17ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String nit = jTextField6.getText();
+        String name = jTextField7.getText();
+        String address = jTextField8.getText();
+        String[] managerInfo = jComboBox1.getItemAt(jComboBox1.getSelectedIndex()).split(" - ");
+        
+        long managerId = Long.parseLong(managerInfo[0]);
+        
+        Manager manager = null;
+        for (Manager manag : this.managers) {
+            if (manag.getId() == managerId) {
+                manager = manag;
+            }
+        }
+        
+        this.publishers.add(new Publisher(nit, name, address, manager));
+        
+        jComboBox5.addItem(name + " (" + nit + ")");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1123,6 +1229,8 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

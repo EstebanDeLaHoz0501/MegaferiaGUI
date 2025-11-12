@@ -14,8 +14,8 @@ public class Author extends Person {
     
     private ArrayList<Book> books;
 
-    public Author(String name, long id) {
-        super(name, id);
+    public Author(long id, String firstname, String lastname) {
+        super(id, firstname, lastname);
         this.books = new ArrayList<>();
     }
     

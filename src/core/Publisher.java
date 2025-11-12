@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Publisher {
     
-    private String nit;
+    private final String nit;
     private String name;
     private String address;
     private Manager manager;

@@ -12,8 +12,8 @@ public class Manager extends Person {
     
     private Publisher publisher;
 
-    public Manager(String name, long id) {
-        super(name, id);
+    public Manager(long id, String firstname, String lastname) {
+        super(id, firstname, lastname);
     }
 
     public void setPublisher(Publisher publisher) {

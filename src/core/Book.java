@@ -14,7 +14,7 @@ public abstract class Book {
     
     protected String title;
     protected ArrayList<Author> authors;
-    protected String isbn;
+    protected final String isbn;
     protected String genre;
     protected String format;
     protected double value;

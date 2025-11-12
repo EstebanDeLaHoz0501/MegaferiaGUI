@@ -14,8 +14,8 @@ public class Narrator extends Person {
     
     private ArrayList<Audiobook> books;
 
-    public Narrator(String name, long id) {
-        super(name, id);
+    public Narrator(long id, String firstname, String lastname) {
+        super(id, firstname, lastname);
         this.books = new ArrayList<>();
     }
     
