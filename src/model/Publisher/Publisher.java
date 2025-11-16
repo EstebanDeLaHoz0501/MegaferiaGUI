@@ -2,9 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core;
+package model.Publisher;
 
+import model.books.Book;
+import model.Stands.Stand;
+import model.Person.Manager;
 import java.util.ArrayList;
+import model.Stands.Stand;
 
 /**
  *
@@ -46,16 +50,24 @@ public class Publisher {
         return manager;
     }
     
-    public int getStandQuantity() {
-        return this.stands.size();
-    }
+//    public int getStandQuantity() {
+//        return this.stands.size();
+//    }
+//    
+//    public void addBook(Book book) {
+//        this.books.add(book);
+//    }
     
-    public void addBook(Book book) {
-        this.books.add(book);
+//    public void addStand(Stand stand) {
+//        this.stands.add(stand);
+//    }
+
+    public ArrayList<Book> getBooks() {
+        return books;
     }
-    
-    public void addStand(Stand stand) {
-        this.stands.add(stand);
+
+    public ArrayList<Stand> getStands() {
+        return stands;
     }
     
 }
