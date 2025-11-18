@@ -11,7 +11,7 @@ import model.Person.Author;
  * @author Esteban
  */
 public class MfGetAuthor {
-    public Author getAuthor(Megaferia mf, int id){
+    public Author getAuthor(Megaferia mf, long id){    ///////////////// Cambie el dato recibido de int a long porque int son 10 digitos y el formulario pidio 15 digitos maximo - Fernando
         for (Author auth : mf.getAuthors()) {
             if (auth.getId() == id) { /////////////MfGetAuthor
                 return auth;

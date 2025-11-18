@@ -31,7 +31,7 @@ public class Publisher {
         this.books = new ArrayList<>();
         this.stands = new ArrayList<>();
         
-        this.manager.setPublisher(this);
+       //this.manager.setPublisher(this);               /////// rompe single responsability, se mueve la logica de esto a "EditorialController" -Fernando
     }
 
     public String getNit() {

@@ -3,7 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Jefferson/MegaferiaGUI/src/core/MegaferiaFrame.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/model/Megaferia/MfGetAuthor.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/model/Megaferia/MfGetManager.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/model/Megaferia/MfGetNarrator.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/model/Publisher/Publisher.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/model/books/Audiobook.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/view/MegaferiaFrame.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/controller/StandController.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/Controller/utils/Response.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/controller/PersonaController.java</file>
         </group>
     </open-files>
 </project-private>

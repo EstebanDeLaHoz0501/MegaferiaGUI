@@ -4,7 +4,10 @@
  */
 package view;
 
+import controller.StandController;
 import com.formdev.flatlaf.FlatDarkLaf;
+import controller.EditorialController;
+import controller.PersonaController;
 import model.books.Audiobook;
 import model.Person.Author;
 import model.books.Book;
@@ -17,6 +20,9 @@ import model.Stands.Stand;
 import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import controller.utils.Response;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -25,25 +31,32 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MegaferiaFrame extends javax.swing.JFrame {
 
-    private ArrayList<Stand> stands;
-    private ArrayList<Author> authors;
-    private ArrayList<Manager> managers;
-    private ArrayList<Narrator> narrators;
-    private ArrayList<Publisher> publishers;
-    private ArrayList<Book> books;
+//    private ArrayList<Stand> stands;
+//    private ArrayList<Author> authors;
+//    private ArrayList<Manager> managers;                      // borrar porque la vista no deberia almacenar datos, igual estas listas estan en model.Megaferia.Megaferia -Fernando 
+//    private ArrayList<Narrator> narrators;
+//    private ArrayList<Publisher> publishers;
+//    private ArrayList<Book> books;
     
-    /**
+      private StandController standController;          //añade el controlador (StandController) -Fernando 
+      private PersonaController personaController;      //añade el controlador (PersonaController) 
+      private EditorialController editorialController;  //añade el controlador (EditorialController)
+      /**
      * Creates new form MegaferiaFrame
      */
     public MegaferiaFrame() {
         initComponents();
         setLocationRelativeTo(null);
-        this.stands = new ArrayList<>();
-        this.authors = new ArrayList<>();
-        this.managers = new ArrayList<>();
-        this.narrators = new ArrayList<>();
-        this.publishers = new ArrayList<>();
-        this.books = new ArrayList<>();
+        this.standController = new StandController();           //Crear nuevo controlador Stand-Fernando 
+        this.personaController = new PersonaController();       //Crear nuevo controlador Persona
+        this.editorialController = new EditorialController();   //Crear nuevo controlador Editorial
+//        this.stands = new ArrayList<>();
+//        this.authors = new ArrayList<>();
+//        this.managers = new ArrayList<>();                // la misma razon que las lineas 28 a 33 -Fernando
+//        this.narrators = new ArrayList<>();
+//        this.publishers = new ArrayList<>();
+//        this.books = new ArrayList<>();
+    
     }
 
     /**
@@ -1393,69 +1406,151 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_LibroTipoDigitalRBActionPerformed
 
     private void StandCrearBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StandCrearBTActionPerformed
-        // TODO add your handling code here:
-        long id = Long.parseLong(StandIDTF.getText());
-        double price = Double.parseDouble(StandPrecioTF.getText());
-        
-        this.stands.add(new Stand(id, price));//////////////////// MfAddStand
-        
-        CSIDStandsCB.addItem("" + id);
-    }//GEN-LAST:event_StandCrearBTActionPerformed
+//        // TODO add your handling code here:
+//        long id = Long.parseLong(StandIDTF.getText());
+//        double price = Double.parseDouble(StandPrecioTF.getText());                       //Borre todo esto para cambiar la logica del boton -Fernando
+//        
+//        this.stands.add(new Stand(id, price));//////////////////// MfAddStand
+//        
+//        CSIDStandsCB.addItem("" + id);
 
+       // Desde aqui, nueva logica para el boton - Fernando
+        String idStr = StandIDTF.getText();
+        String precioStr = StandPrecioTF.getText();
+        Response response = this.standController.crearStand(idStr, precioStr);
+        JOptionPane.showMessageDialog(this, response.getMessage());
+        if (response.isSuccess()) {
+            
+            CSIDStandsCB.addItem(idStr);
+            StandIDTF.setText("");
+            StandPrecioTF.setText("");
+    }//GEN-LAST:event_StandCrearBTActionPerformed
+}
+    
     private void PersonaCrearAutorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PersonaCrearAutorBTActionPerformed
-        // TODO add your handling code here:
-        long id = Long.parseLong(PersonaIDTF.getText());
-        String firstname = PersonaNombreTF.getText();
-        String lastname = PersonaApellidoTF.getText();
+//        // TODO add your handling code here:
+//        long id = Long.parseLong(PersonaIDTF.getText());
+//        String firstname = PersonaNombreTF.getText();
+//        String lastname = PersonaApellidoTF.getText();                                            //borrar logica vieja del boton -Fernando
+//        
+//        this.authors.add(new Author(id, firstname, lastname));/////////////////// MfAddAuthor
+//        
+//        LibroAutoresCB.addItem(id + " - " + firstname + " " + lastname);
+//        CAAutorCB.addItem(id + " - " + firstname + " " + lastname);
+
+//         A partir de aqui, logica nueva 
+        String idStr = PersonaIDTF.getText();
+        String nombre = PersonaNombreTF.getText();
+        String apellido = PersonaApellidoTF.getText();
+        String nombreCompleto = nombre + " " + apellido;        
         
-        this.authors.add(new Author(id, firstname, lastname));/////////////////// MfAddAuthor
-        
-        LibroAutoresCB.addItem(id + " - " + firstname + " " + lastname);
-        CAAutorCB.addItem(id + " - " + firstname + " " + lastname);
+        Response response = this.personaController.crearAutor(idStr, nombre, apellido);
+        JOptionPane.showMessageDialog(this, response.getMessage());
+
+        if (response.isSuccess()) {
+            LibroAutoresCB.addItem(idStr + " - " + nombreCompleto);
+            CAAutorCB.addItem(idStr + " - " + nombreCompleto);   
+            PersonaIDTF.setText("");
+            PersonaNombreTF.setText("");
+            PersonaApellidoTF.setText("");
+        }
     }//GEN-LAST:event_PersonaCrearAutorBTActionPerformed
 
     private void PersonaCrearGerenteBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PersonaCrearGerenteBTActionPerformed
-        // TODO add your handling code here:
-        long id = Long.parseLong(PersonaIDTF.getText());
-        String firstname = PersonaNombreTF.getText();
-        String lastname = PersonaApellidoTF.getText();
-        
-        this.managers.add(new Manager(id, firstname, lastname));////////////////// MfAddManager
-        
-        EditorialGerenteCB.addItem(id + " - " + firstname + " " + lastname);
+//        // TODO add your handling code here:
+//        long id = Long.parseLong(PersonaIDTF.getText());
+//        String firstname = PersonaNombreTF.getText();
+//        String lastname = PersonaApellidoTF.getText();                                                //logica vieja del boton -Fernando
+//        
+//        this.managers.add(new Manager(id, firstname, lastname));////////////////// MfAddManager
+//        
+//        EditorialGerenteCB.addItem(id + " - " + firstname + " " + lastname);
+
+//           A partir de aqui, logica nueva 
+        String idStr = PersonaIDTF.getText();
+        String nombre = PersonaNombreTF.getText();
+        String apellido = PersonaApellidoTF.getText();
+        String nombreCompleto = nombre + " " + apellido;
+
+        Response response = this.personaController.crearGerente(idStr, nombre, apellido);
+        JOptionPane.showMessageDialog(this, response.getMessage());
+
+        if (response.isSuccess()) {
+            EditorialGerenteCB.addItem(idStr + " - " + nombreCompleto);         
+            PersonaIDTF.setText("");
+            PersonaNombreTF.setText("");
+            PersonaApellidoTF.setText("");
+        }
     }//GEN-LAST:event_PersonaCrearGerenteBTActionPerformed
 
     private void PersonaCrearNarradorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PersonaCrearNarradorBTActionPerformed
-        // TODO add your handling code here:
-        long id = Long.parseLong(PersonaIDTF.getText());
-        String firstname = PersonaNombreTF.getText();
-        String lastname = PersonaApellidoTF.getText();
-        
-        this.narrators.add(new Narrator(id, firstname, lastname));///////////// MfAddNarrator
-        
-        LibroNarradorCB.addItem(id + " - " + firstname + " " + lastname);
-    }//GEN-LAST:event_PersonaCrearNarradorBTActionPerformed
+//        // TODO add your handling code here:
+//        long id = Long.parseLong(PersonaIDTF.getText());
+//        String firstname = PersonaNombreTF.getText();
+//        String lastname = PersonaApellidoTF.getText();                                            //logica vieja...
+//        
+//        this.narrators.add(new Narrator(id, firstname, lastname));///////////// MfAddNarrator
+//        
+//        LibroNarradorCB.addItem(id + " - " + firstname + " " + lastname);
 
+//      a partir de aqui, logica nueva
+        String idStr = PersonaIDTF.getText();
+        String nombre = PersonaNombreTF.getText();
+        String apellido = PersonaApellidoTF.getText();
+        String nombreCompleto = nombre + " " + apellido;
+
+        Response response = this.personaController.crearNarrador(idStr, nombre, apellido);
+        JOptionPane.showMessageDialog(this, response.getMessage());
+
+        if (response.isSuccess()) {
+            LibroNarradorCB.addItem(idStr + " - " + nombreCompleto);
+            PersonaIDTF.setText("");
+            PersonaNombreTF.setText("");
+            PersonaApellidoTF.setText("");
+        }
+    }//GEN-LAST:event_PersonaCrearNarradorBTActionPerformed
+    
     private void EditorialCrearBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditorialCrearBTActionPerformed
-        // TODO add your handling code here:
+//        // TODO add your handling code here:
+//        String nit = EditorialNITTF.getText();
+//        String name = EditorialNombreTF.getText();
+//        String address = EditorialDireccionTF.getText();
+//        String[] managerData = EditorialGerenteCB.getItemAt(EditorialGerenteCB.getSelectedIndex()).split(" - ");
+//        
+//        long managerId = Long.parseLong(managerData[0]);
+//        
+//        Manager manager = null;                 //////////////                                                        //Reemplazar/borrar esta logica viejo -Fernando
+//        for (Manager manag : this.managers) {   //////////////    
+//            if (manag.getId() == managerId) {   ////////////// MfGetManager    
+//                manager = manag;                //////////////                                                        
+//            }                                   //////////////
+//        }                                       //////////////
+//        
+//        this.publishers.add(new Publisher(nit, name, address, manager)); //////////  MfAddPublisher
+//        
+//        LibroEditorialCB.addItem(name + " (" + nit + ")");
+//        CSEditorialesCB.addItem(name + " (" + nit + ")");
+
+//              A partir de aqui, logica nueva
+
+
         String nit = EditorialNITTF.getText();
-        String name = EditorialNombreTF.getText();
-        String address = EditorialDireccionTF.getText();
-        String[] managerData = EditorialGerenteCB.getItemAt(EditorialGerenteCB.getSelectedIndex()).split(" - ");
-        
-        long managerId = Long.parseLong(managerData[0]);
-        
-        Manager manager = null;                 //////////////
-        for (Manager manag : this.managers) {   //////////////
-            if (manag.getId() == managerId) {   ////////////// MfGetManager
-                manager = manag;                //////////////
-            }                                   //////////////
-        }                                       //////////////
-        
-        this.publishers.add(new Publisher(nit, name, address, manager)); //////////  MfAddPublisher
-        
-        LibroEditorialCB.addItem(name + " (" + nit + ")");
-        CSEditorialesCB.addItem(name + " (" + nit + ")");
+        String nombre = EditorialNombreTF.getText();
+        String direccion = EditorialDireccionTF.getText();
+        String managerStr = (String) EditorialGerenteCB.getSelectedItem();
+
+        Response response = this.editorialController.crearEditorial(nit, nombre, direccion, managerStr);
+        JOptionPane.showMessageDialog(this, response.getMessage());
+
+        if (response.isSuccess()) {
+            String itemNuevo = nombre + " (" + nit + ")";
+            LibroEditorialCB.addItem(itemNuevo);
+            CSEditorialesCB.addItem(itemNuevo);
+            EditorialNITTF.setText("");
+            EditorialNombreTF.setText("");
+            EditorialDireccionTF.setText("");
+            EditorialGerenteCB.setSelectedIndex(0); // Vuelve a "Seleccione uno..."
+        }
     }//GEN-LAST:event_EditorialCrearBTActionPerformed
 
     private void LibroAgregarAutorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibroAgregarAutorBTActionPerformed

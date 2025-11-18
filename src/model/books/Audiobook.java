@@ -24,7 +24,7 @@ public class Audiobook extends Book {
         this.duration = duration;
         this.narrador = narrator;
         
-        this.narrador.addBook(this);
+      //this.narrador.addBook(this);        /////// rompe single responsability, se mueve la logica de esto a "LibroController" -Fernando
     }
 
     public int getDuration() {
