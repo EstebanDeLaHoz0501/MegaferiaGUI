@@ -6,6 +6,7 @@ package core.views;
 
 import core.controllers.StandController;
 import com.formdev.flatlaf.FlatDarkLaf;
+import core.controllers.BookController;
 import core.controllers.EditorialController;
 import core.controllers.PersonController;
 import core.models.book.Audiobook;
@@ -31,31 +32,21 @@ import javax.swing.JOptionPane;
  */
 public class MegaferiaFrame extends javax.swing.JFrame {
 
-//    private ArrayList<Stand> stands;
-//    private ArrayList<Author> authors;
-//    private ArrayList<Manager> managers;                      // borrar porque la vista no deberia almacenar datos, igual estas listas estan en model.Megaferia.Megaferia -Fernando 
-//    private ArrayList<Narrator> narrators;
-//    private ArrayList<Publisher> publishers;
-//    private ArrayList<Book> books;
+
     
-      private StandController standController;          //añade el controlador (StandController) -Fernando 
-      private PersonController personaController;      //añade el controlador (PersonController) 
-      private EditorialController editorialController;  //añade el controlador (EditorialController)
-      /**
-     * Creates new form MegaferiaFrame
-     */
+      private StandController standController;          
+      private PersonController personaController;      
+      private EditorialController editorialController;  
+      private BookController bookController;              
+      
     public MegaferiaFrame() {
         initComponents();
         setLocationRelativeTo(null);
-        this.standController = new StandController();           //Crear nuevo controlador Stand-Fernando 
-        this.personaController = new PersonController();       //Crear nuevo controlador Persona
-        this.editorialController = new EditorialController();   //Crear nuevo controlador Editorial
-//        this.stands = new ArrayList<>();
-//        this.authors = new ArrayList<>();
-//        this.managers = new ArrayList<>();                // la misma razon que las lineas 28 a 33 -Fernando
-//        this.narrators = new ArrayList<>();
-//        this.publishers = new ArrayList<>();
-//        this.books = new ArrayList<>();
+        this.standController = new StandController();           
+        this.personaController = new PersonController();      
+        this.editorialController = new EditorialController();   
+        this.bookController = new BookController();            
+
     
     }
 
@@ -1406,15 +1397,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_LibroTipoDigitalRBActionPerformed
 
     private void StandCrearBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StandCrearBTActionPerformed
-//        // TODO add your handling code here:
-//        long id = Long.parseLong(StandIDTF.getText());
-//        double price = Double.parseDouble(StandPrecioTF.getText());                       //Borre todo esto para cambiar la logica del boton -Fernando
-//        
-//        this.stands.add(new Stand(id, price));//////////////////// MfAddStand
-//        
-//        CSIDStandsCB.addItem("" + id);
 
-       // Desde aqui, nueva logica para el boton - Fernando
         String idStr = StandIDTF.getText();
         String precioStr = StandPrecioTF.getText();
         Response response = this.standController.crearStand(idStr, precioStr);
@@ -1428,17 +1411,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
 }
     
     private void PersonaCrearAutorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PersonaCrearAutorBTActionPerformed
-//        // TODO add your handling code here:
-//        long id = Long.parseLong(PersonaIDTF.getText());
-//        String firstname = PersonaNombreTF.getText();
-//        String lastname = PersonaApellidoTF.getText();                                            //borrar logica vieja del boton -Fernando
-//        
-//        this.authors.add(new Author(id, firstname, lastname));/////////////////// MfAddAuthor
-//        
-//        LibroAutoresCB.addItem(id + " - " + firstname + " " + lastname);
-//        CAAutorCB.addItem(id + " - " + firstname + " " + lastname);
 
-//         A partir de aqui, logica nueva 
         String idStr = PersonaIDTF.getText();
         String nombre = PersonaNombreTF.getText();
         String apellido = PersonaApellidoTF.getText();
@@ -1457,16 +1430,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_PersonaCrearAutorBTActionPerformed
 
     private void PersonaCrearGerenteBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PersonaCrearGerenteBTActionPerformed
-//        // TODO add your handling code here:
-//        long id = Long.parseLong(PersonaIDTF.getText());
-//        String firstname = PersonaNombreTF.getText();
-//        String lastname = PersonaApellidoTF.getText();                                                //logica vieja del boton -Fernando
-//        
-//        this.managers.add(new Manager(id, firstname, lastname));////////////////// MfAddManager
-//        
-//        EditorialGerenteCB.addItem(id + " - " + firstname + " " + lastname);
 
-//           A partir de aqui, logica nueva 
         String idStr = PersonaIDTF.getText();
         String nombre = PersonaNombreTF.getText();
         String apellido = PersonaApellidoTF.getText();
@@ -1484,16 +1448,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_PersonaCrearGerenteBTActionPerformed
 
     private void PersonaCrearNarradorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PersonaCrearNarradorBTActionPerformed
-//        // TODO add your handling code here:
-//        long id = Long.parseLong(PersonaIDTF.getText());
-//        String firstname = PersonaNombreTF.getText();
-//        String lastname = PersonaApellidoTF.getText();                                            //logica vieja...
-//        
-//        this.narrators.add(new Narrator(id, firstname, lastname));///////////// MfAddNarrator
-//        
-//        LibroNarradorCB.addItem(id + " - " + firstname + " " + lastname);
 
-//      a partir de aqui, logica nueva
         String idStr = PersonaIDTF.getText();
         String nombre = PersonaNombreTF.getText();
         String apellido = PersonaApellidoTF.getText();
@@ -1511,27 +1466,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_PersonaCrearNarradorBTActionPerformed
     
     private void EditorialCrearBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditorialCrearBTActionPerformed
-//        // TODO add your handling code here:
-//        String nit = EditorialNITTF.getText();
-//        String name = EditorialNombreTF.getText();
-//        String address = EditorialDireccionTF.getText();
-//        String[] managerData = EditorialGerenteCB.getItemAt(EditorialGerenteCB.getSelectedIndex()).split(" - ");
-//        
-//        long managerId = Long.parseLong(managerData[0]);
-//        
-//        Manager manager = null;                 //////////////                                                        //Reemplazar/borrar esta logica viejo -Fernando
-//        for (Manager manag : this.managers) {   //////////////    
-//            if (manag.getId() == managerId) {   ////////////// MfGetManager    
-//                manager = manag;                //////////////                                                        
-//            }                                   //////////////
-//        }                                       //////////////
-//        
-//        this.publishers.add(new Publisher(nit, name, address, manager)); //////////  MfAddPublisher
-//        
-//        LibroEditorialCB.addItem(name + " (" + nit + ")");
-//        CSEditorialesCB.addItem(name + " (" + nit + ")");
 
-//              A partir de aqui, logica nueva
 
 
         String nit = EditorialNITTF.getText();
@@ -1566,62 +1501,46 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_LibroEliminarAutorBTActionPerformed
 
     private void LibroCrearBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibroCrearBTActionPerformed
-        // TODO add your handling code here:
-        String title = LibroTituloTF.getText();
-        String[] authorsData = LibroTA.getText().split("\n");
+
+        String titulo = LibroTituloTF.getText();
         String isbn = LibroISBNTF.getText();
-        String genre = LibroGeneroCB.getItemAt(LibroGeneroCB.getSelectedIndex());
-        String format = LibroFormatoCB.getItemAt(LibroFormatoCB.getSelectedIndex());
-        double value = Double.parseDouble(LibroValorTF.getText());
-        String publisherData = LibroEditorialCB.getItemAt(LibroEditorialCB.getSelectedIndex());
+        String genero = (String) LibroGeneroCB.getSelectedItem();
+        String formato = (String) LibroFormatoCB.getSelectedItem();
+        String valorStr = LibroValorTF.getText();
+        String editorialStr = (String) LibroEditorialCB.getSelectedItem();
+        String autoresStr = LibroTA.getText(); 
         
-        ArrayList<Author> authors = new ArrayList<>();                         /////////
-        for (String authorData : authorsData) {                                /////////
-            long authorId = Long.parseLong(authorData.split(" - ")[0]);   ///////// esto va en controlador creo
-            for (Author author : this.authors) {                                ////////
-                if (author.getId() == authorId) {                               ////////
-                    authors.add(author);                                    //////////
-                }
-            }
-        }
-        
-        String publisherNit = publisherData.split(" ")[1].replace("(", "").replace(")", "");
-        
-        Publisher publisher = null;
-        for (Publisher publish : this.publishers) {                             /////////
-            if (publish.getNit().equals(publisherNit)) {                /////////  MfGetPublisher
-                publisher = publish;                                           //////////
-            }
-        }
-        
+        Response response = null;
+
+
         if (LibroTipoImpresoRB.isSelected()) {
-            int pages = Integer.parseInt(LibroNrPagsTF.getText());
-            int copies = Integer.parseInt(LibroNrEjempTF.getText());
+            String paginasStr = LibroNrPagsTF.getText();
+            String ejemplaresStr = LibroNrEjempTF.getText();
             
-            this.books.add(new PrintedBook(title, authors, isbn, genre, format, value, publisher, pages, copies)); //// MfAddBook
+            response = this.bookController.crearLibroImpreso(titulo, isbn, genero, formato, valorStr, editorialStr, autoresStr, paginasStr, ejemplaresStr);
+        
+        } else if (LibroTipoDigitalRB.isSelected()) {
+            String hipervinculo = LibroHipervinculosTF.getText();
+            
+            response = this.bookController.crearLibroDigital(titulo, isbn, genero, formato, valorStr, editorialStr, autoresStr, hipervinculo);
+            
+        } else if (LibroTipoALibroRB.isSelected()) {
+            String duracionStr = LibroDuracionTF.getText();
+            String narradorStr = (String) LibroNarradorCB.getSelectedItem();
+            
+            response = this.bookController.crearAudioLibro(titulo, isbn, genero, formato, valorStr, editorialStr, autoresStr, duracionStr, narradorStr);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de libro (Impreso, Digital o Audio).");
+            return;
         }
-        if (LibroTipoDigitalRB.isSelected()) {
-            String hyperlink = LibroHipervinculosTF.getText();
-            if (hyperlink.equals("")) {
-                this.books.add(new DigitalBook(title, authors, isbn, genre, format, value, publisher));   //// MfAddBook  
-            } else {
-                this.books.add(new DigitalBook(title, authors, isbn, genre, format, value, publisher, hyperlink)); //// MfAddBook
+
+ 
+        if (response != null) {
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+            
+            if (response.isSuccess()) {
+                limpiarCamposLibro();
             }
-        }
-        if (LibroTipoALibroRB.isSelected()) {
-            int duration = Integer.parseInt(LibroDuracionTF.getText());
-            String[] narratorData = LibroNarradorCB.getItemAt(LibroNarradorCB.getSelectedIndex()).split(" - ");
-            
-            long narratorId = Long.parseLong(narratorData[0]);
-            
-            Narrator narrator = null;
-            for (Narrator narrat : this.narrators) {
-                if (narrat.getId() == narratorId) {        ///////////MfGetNarrator
-                    narrator = narrat;
-                }
-            }
-            
-            this.books.add(new Audiobook(title, authors, isbn, genre, format, value, publisher, duration, narrator));  //// MfAddBook
         }
     }//GEN-LAST:event_LibroCrearBTActionPerformed
 
@@ -1650,34 +1569,18 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CSEliminarEditorialBTActionPerformed
 
     private void CSComprarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSComprarBTActionPerformed
-        // TODO add your handling code here:
-        String[] standIds = CSStandsTA.getText().split("\n");
-        String[] publishersData = CSEditorialesTA.getText().split("\n");
+
+        String standsTexto = CSStandsTA.getText();
+        String editorialesTexto = CSEditorialesTA.getText();
+        Response response = this.standController.comprarStand(standsTexto, editorialesTexto);
+        javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
         
-        ArrayList<Stand> stands = new ArrayList<>();
-        for (String standId : standIds) {
-            for (Stand stand : this.stands) {
-                if (stand.getId() == Long.parseLong(standId)) {    /////////controladores creo
-                    stands.add(stand);
-                }
-            }
-        }
-        
-        ArrayList<Publisher> publishers = new ArrayList<>();
-        for (String publisherData : publishersData) {
-            String publisherNit = publisherData.split(" ")[1].replace("(", "").replace(")", "");
-            for (Publisher publisher : this.publishers) {
-                if (publisher.getNit().equals(publisherNit)) {
-                    publishers.add(publisher);                          /////////controladores creo
-                }
-            }
-        }
-        
-        for (Stand stand : stands) {
-            for (Publisher publisher : publishers) {
-                stand.addPublisher(publisher);                   //////por ende controladores?¿
-                publisher.addStand(stand);
-            }
+        if (response.isSuccess()) {
+            CSStandsTA.setText("");
+            CSEditorialesTA.setText("");
+            
+            if (CSIDStandsCB.getItemCount() > 0) CSIDStandsCB.setSelectedIndex(0);
+            if (CSEditorialesCB.getItemCount() > 0) CSEditorialesCB.setSelectedIndex(0);
         }
     }//GEN-LAST:event_CSComprarBTActionPerformed
 
@@ -1877,6 +1780,34 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                 new MegaferiaFrame().setVisible(true);
             }
         });
+    }
+    
+    // Método auxiliar para limpiar el formulario de Libros después de crear uno    -Fernando 
+    // No estoy del todo seguro si dejar esto aqui
+    private void limpiarCamposLibro() {
+        LibroTituloTF.setText("");
+        LibroISBNTF.setText("");
+        LibroValorTF.setText("");
+        LibroNrPagsTF.setText("");
+        LibroNrEjempTF.setText("");
+        LibroHipervinculosTF.setText("");
+        LibroDuracionTF.setText("");
+        LibroTA.setText(""); 
+        
+        if (LibroGeneroCB.getItemCount() > 0) LibroGeneroCB.setSelectedIndex(0);
+        if (LibroEditorialCB.getItemCount() > 0) LibroEditorialCB.setSelectedIndex(0);
+        if (LibroNarradorCB.getItemCount() > 0) LibroNarradorCB.setSelectedIndex(0);
+        if (LibroFormatoCB.getItemCount() > 0) LibroFormatoCB.setSelectedIndex(0);
+        
+        LibroTipoImpresoRB.setSelected(false);
+        LibroTipoDigitalRB.setSelected(false);
+        LibroTipoALibroRB.setSelected(false);
+        
+        LibroNrPagsTF.setEnabled(false);
+        LibroNrEjempTF.setEnabled(false);
+        LibroHipervinculosTF.setEnabled(false);
+        LibroDuracionTF.setEnabled(false);
+        LibroNarradorCB.setEnabled(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
