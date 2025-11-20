@@ -11,6 +11,8 @@ import core.models.megaferia.Megaferia;
 import core.models.megaferia.MfAddStand;
 import core.models.publisher.Publisher;
 import core.models.stand.Stand;
+import core.models.stand.StandGetPublisherQuantity;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -124,5 +126,24 @@ public class StandController {
         }
 
         return new Response(true, "Compra realizada con éxito. Los stands han sido asignados.", Status.OK); 
-}
     }
+    public Response ShowStands (DefaultTableModel model){
+        if(this.megaferia.getStands().isEmpty())
+            return new Response(false, "No hay Stands en la base de datos", Status.NO_CONTENT);
+        else{       
+            model.setRowCount(0);
+            StandGetPublisherQuantity sgbq = new StandGetPublisherQuantity();
+            for (Stand stand : this.megaferia.getStands()) {
+                String publishers = "";
+                if (sgbq.getPublisherQuantity(stand) > 0) {
+                    publishers += stand.getPublishers().get(0).getName();
+                    for (int i = 1; i < sgbq.getPublisherQuantity(stand); i++) {
+                        publishers += (", " + stand.getPublishers().get(i).getName());
+                    }
+                }
+                model.addRow(new Object[]{stand.getId(), stand.getPrice(), sgbq.getPublisherQuantity(stand) > 0 ? "Si" : "No", publishers});
+            }
+            return new Response(true, "Editoriales válidas", Status.OK);
+        }
+    }
+}

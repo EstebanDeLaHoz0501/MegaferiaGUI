@@ -11,6 +11,8 @@ import core.models.megaferia.Megaferia;
 import core.models.megaferia.MfAddPublisher;
 import core.models.person.Manager;
 import core.models.publisher.Publisher;
+import core.models.publisher.PublisherGetStandQuantity;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,8 +22,10 @@ public class EditorialController {
     
     private Megaferia megaferia;
 
+
     public EditorialController() {
         this.megaferia = Megaferia.getInstance();
+        
     }
 
 
@@ -75,6 +79,25 @@ public class EditorialController {
         mfAdd.addPublisher(megaferia, nuevaEditorial);
 
         return new Response(true, "Editorial " + nombre + " creada con éxito.", Status.CREATED);
+    }
+    public Response ShowPublishers (DefaultTableModel model){
+        if(this.megaferia.getPublishers().isEmpty())
+            return new Response(false, "No hay editoriales en la base de datos", Status.NO_CONTENT);
+        else{
+            
+            model.setRowCount(0);
+            PublisherGetStandQuantity pgsq = new PublisherGetStandQuantity(); 
+            for (Publisher publisher : megaferia.getPublishers()) {
+                model.addRow(new Object[]{
+                    publisher.getNit(),
+                    publisher.getName(),
+                    publisher.getAddress(),
+                    publisher.getManager().getFullname(),
+                    pgsq.publisherGetStandQuantity(publisher)
+                });
+            }
+            return new Response(true, "Editoriales válidas", Status.OK);
+        }
     }
     
 }

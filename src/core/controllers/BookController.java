@@ -22,6 +22,7 @@ import core.models.person.narrator.NarratorAddBook;
 import core.models.publisher.Publisher;
 import core.models.publisher.PublisherAddBook;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -149,7 +150,99 @@ public class BookController {
             return new Response(false, "Error: Verifique duración o valor.", Status.BAD_REQUEST);
         }
     }
-
+    public Response ShowBooks (DefaultTableModel model, String search){
+        if(this.megaferia.getBooks().isEmpty())
+            return new Response(false, "No hay libros en la base de datos", Status.NO_CONTENT);
+        else{
+            
+            model.setRowCount(0);
+            if (search.equals("Libros Impresos")) {
+                for (Book book : this.megaferia.getBooks()) {
+                    if (book instanceof PrintedBook printedBook) {
+                        String authors = printedBook.getAuthors().get(0).getFullname();
+                        for (int i = 1; i < printedBook.getAuthors().size(); i++) {
+                            authors += (", " + printedBook.getAuthors().get(i).getFullname());
+                        }
+                        model.addRow(new Object[]{printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-"});
+                    }
+                }
+            }
+            if (search.equals("Libros Digitales")) {
+                for (Book book : this.megaferia.getBooks()) {
+                    if (book instanceof DigitalBook digitalBook) {
+                        String authors = digitalBook.getAuthors().get(0).getFullname();
+                        for (int i = 1; i < digitalBook.getAuthors().size(); i++) {
+                            authors += (", " + digitalBook.getAuthors().get(i).getFullname());
+                        }
+                        model.addRow(new Object[]{digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-"});
+                    }
+                }
+            }
+            if (search.equals("Audiolibros")) {
+                for (Book book : this.megaferia.getBooks()) {
+                    if (book instanceof Audiobook audiobook) {
+                        String authors = audiobook.getAuthors().get(0).getFullname();
+                        for (int i = 1; i < audiobook.getAuthors().size(); i++) {
+                            authors += (", " + audiobook.getAuthors().get(i).getFullname());
+                        }
+                        model.addRow(new Object[]{audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration()});
+                    }
+                }
+            }
+            if (search.equals("Todos los Libros")) {
+                for (Book book : this.megaferia.getBooks()) { 
+                    String authors = book.getAuthors().get(0).getFullname();
+                    for (int i = 1; i < book.getAuthors().size(); i++) {
+                        authors += (", " + book.getAuthors().get(i).getFullname());
+                    }
+                    if (book instanceof PrintedBook printedBook) {
+                        model.addRow(new Object[]{printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-"});
+                    }
+                    if (book instanceof DigitalBook digitalBook) {
+                        model.addRow(new Object[]{digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-"});
+                    }
+                    if (book instanceof Audiobook audiobook) {
+                        model.addRow(new Object[]{audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration()});
+                    }
+                }
+            }
+            return new Response(true, "Editoriales válidas", Status.OK);
+        }
+    }
+    public Response buscarPorAutor(String[] authorData, DefaultTableModel model){
+        MfGetAuthor mfga = new MfGetAuthor();
+        try{
+            long authorId = Long.parseLong(authorData[0]);
+            Author author = mfga.getAuthor(this.megaferia, authorId);
+            model.setRowCount(0);
+            if(!author.getBooks().isEmpty()){
+                for (Book book : author.getBooks()) { 
+                    String authors = book.getAuthors().get(0).getFullname();
+                    for (int i = 1; i < book.getAuthors().size(); i++) {
+                        authors += (", " + book.getAuthors().get(i).getFullname());
+                    }
+                    if (book instanceof PrintedBook printedBook) {
+                        model.addRow(new Object[]{printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-"});
+                    }
+                    if (book instanceof DigitalBook digitalBook) {
+                        model.addRow(new Object[]{digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-"});
+                    }
+                    if (book instanceof Audiobook audiobook) {
+                        model.addRow(new Object[]{audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration()});
+                    }
+                }
+                return new Response (true, "Libros del autor encontrados con éxito.", Status.OK);
+            }else{
+                return new Response (false, "Este autor no tiene libros", Status.NO_CONTENT);
+            }
+            
+        }catch(Exception e) {
+            return new Response (false, "Seleccione un autor válido.", Status.BAD_REQUEST);
+        }
+        
+        
+        
+    }
     // --- MÉTODOS PRIVADOS DE AYUDA ---
 
     // Parsea el String "Nombre (NIT)" para sacar solo el NIT

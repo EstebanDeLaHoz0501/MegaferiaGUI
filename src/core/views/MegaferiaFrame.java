@@ -142,7 +142,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         ShowPersonasTable = new javax.swing.JTable();
-        ShowPersonasConsultar = new javax.swing.JButton();
+        ShowPersonasConsultarBT = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         ShowStandsTable = new javax.swing.JTable();
@@ -946,11 +946,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(ShowPersonasTable);
 
-        ShowPersonasConsultar.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        ShowPersonasConsultar.setText("Consultar");
-        ShowPersonasConsultar.addActionListener(new java.awt.event.ActionListener() {
+        ShowPersonasConsultarBT.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        ShowPersonasConsultarBT.setText("Consultar");
+        ShowPersonasConsultarBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ShowPersonasConsultarActionPerformed(evt);
+                ShowPersonasConsultarBTActionPerformed(evt);
             }
         });
 
@@ -965,7 +965,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 759, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(361, 361, 361)
-                        .addComponent(ShowPersonasConsultar)))
+                        .addComponent(ShowPersonasConsultarBT)))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -974,7 +974,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(ShowPersonasConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ShowPersonasConsultarBT, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
         );
 
@@ -1586,132 +1586,33 @@ public class MegaferiaFrame extends javax.swing.JFrame {
 
     private void ShowEditorialesConsutarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowEditorialesConsutarBTActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) ShowEditorialesTable.getModel();
-        model.setRowCount(0);
-        for (Publisher publisher : this.publishers) {
-            model.addRow(new Object[]{publisher.getNit(), publisher.getName(), publisher.getAddress(), publisher.getManager().getFullname(), publisher.getStandQuantity()});
-        }
+        Response response = this.editorialController.ShowPublishers((DefaultTableModel) ShowEditorialesTable.getModel());
     }//GEN-LAST:event_ShowEditorialesConsutarBTActionPerformed
 
-    private void ShowPersonasConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPersonasConsultarActionPerformed
+    private void ShowPersonasConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPersonasConsultarBTActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) ShowPersonasTable.getModel();
-        model.setRowCount(0);
-        for (Author author : this.authors) {
-            model.addRow(new Object[]{author.getId(), author.getFullname(), "Autor", "-", author.getBookQuantity()});
-        }
-        for (Manager manager : this.managers) {
-            model.addRow(new Object[]{manager.getId(), manager.getFullname(), "Gerente", manager.getPublisher().getName(), 0});
-        }
-        for (Narrator narrator : this.narrators) {
-            model.addRow(new Object[]{narrator.getId(), narrator.getFullname(), "Narrador", "-", narrator.getBookQuantity()});
-        }
-    }//GEN-LAST:event_ShowPersonasConsultarActionPerformed
+        Response response = this.personaController.ShowPersonas((DefaultTableModel) ShowPersonasTable.getModel());
+//
+    }//GEN-LAST:event_ShowPersonasConsultarBTActionPerformed
 
     private void ShowStandsConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowStandsConsultarBTActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) ShowStandsTable.getModel();
-        model.setRowCount(0);
-        for (Stand stand : this.stands) {
-            String publishers = "";
-            if (stand.getPublisherQuantity() > 0) {
-                publishers += stand.getPublishers().get(0).getName();
-                for (int i = 1; i < stand.getPublisherQuantity(); i++) {
-                    publishers += (", " + stand.getPublishers().get(i).getName());
-                }
-            }
-            model.addRow(new Object[]{stand.getId(), stand.getPrice(), stand.getPublisherQuantity() > 0 ? "Si" : "No", publishers});
-        }
+        Response response = this.standController.ShowStands((DefaultTableModel) ShowStandsTable.getModel());
     }//GEN-LAST:event_ShowStandsConsultarBTActionPerformed
 
     private void ShowLibrosConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowLibrosConsultarBTActionPerformed
         // TODO add your handling code here:
-        String search = ShowLibrosCB.getItemAt(ShowLibrosCB.getSelectedIndex());
-        
-        DefaultTableModel model = (DefaultTableModel) ShowLibrosTable.getModel();
-        model.setRowCount(0);
-        
-        if (search.equals("Libros Impresos")) {
-            for (Book book : this.books) {
-                if (book instanceof PrintedBook printedBook) {
-                    String authors = printedBook.getAuthors().get(0).getFullname();
-                    for (int i = 1; i < printedBook.getAuthors().size(); i++) {
-                        authors += (", " + printedBook.getAuthors().get(i).getFullname());
-                    }
-                    model.addRow(new Object[]{printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-"});
-                }
-            }
-        }
-        if (search.equals("Libros Digitales")) {
-            for (Book book : this.books) {
-                if (book instanceof DigitalBook digitalBook) {
-                    String authors = digitalBook.getAuthors().get(0).getFullname();
-                    for (int i = 1; i < digitalBook.getAuthors().size(); i++) {
-                        authors += (", " + digitalBook.getAuthors().get(i).getFullname());
-                    }
-                    model.addRow(new Object[]{digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-"});
-                }
-            }
-        }
-        if (search.equals("Audiolibros")) {
-            for (Book book : this.books) {
-                if (book instanceof Audiobook audiobook) {
-                    String authors = audiobook.getAuthors().get(0).getFullname();
-                    for (int i = 1; i < audiobook.getAuthors().size(); i++) {
-                        authors += (", " + audiobook.getAuthors().get(i).getFullname());
-                    }
-                    model.addRow(new Object[]{audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration()});
-                }
-            }
-        }
-        if (search.equals("Todos los Libros")) {
-            for (Book book : this.books) { 
-                String authors = book.getAuthors().get(0).getFullname();
-                for (int i = 1; i < book.getAuthors().size(); i++) {
-                    authors += (", " + book.getAuthors().get(i).getFullname());
-                }
-                if (book instanceof PrintedBook printedBook) {
-                    model.addRow(new Object[]{printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-"});
-                }
-                if (book instanceof DigitalBook digitalBook) {
-                    model.addRow(new Object[]{digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-"});
-                }
-                if (book instanceof Audiobook audiobook) {
-                    model.addRow(new Object[]{audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration()});
-                }
-            }
-        }
+        Response response = this.bookController.ShowBooks((DefaultTableModel) ShowLibrosTable.getModel(),ShowLibrosCB.getItemAt(ShowLibrosCB.getSelectedIndex()) );
     }//GEN-LAST:event_ShowLibrosConsultarBTActionPerformed
 
     private void CAAutorConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CAAutorConsultarBTActionPerformed
         // TODO add your handling code here:
-        String[] authorData = CAAutorCB.getItemAt(CAAutorCB.getSelectedIndex()).split(" - ");
-        long authorId = Long.parseLong(authorData[0]);
-        
-        Author author = null;
-        for (Author auth : this.authors) {
-            if (auth.getId() == authorId) { /////////////MfGetAuthor
-                author = auth;
-            }
-        }
-        
-        DefaultTableModel model = (DefaultTableModel) CATable1.getModel();
-        model.setRowCount(0);
-        
-        for (Book book : author.getBooks()) { 
-            String authors = book.getAuthors().get(0).getFullname();
-            for (int i = 1; i < book.getAuthors().size(); i++) {
-                authors += (", " + book.getAuthors().get(i).getFullname());
-            }
-            if (book instanceof PrintedBook printedBook) {
-                model.addRow(new Object[]{printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-"});
-            }
-            if (book instanceof DigitalBook digitalBook) {
-                model.addRow(new Object[]{digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-"});
-            }
-            if (book instanceof Audiobook audiobook) {
-                model.addRow(new Object[]{audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration()});
-            }
+        int index = CAAutorCB.getSelectedIndex();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un autor.");
+            return;
+        }else{
+            Response response = this.bookController.buscarPorAutor(CAAutorCB.getItemAt(CAAutorCB.getSelectedIndex()).split(" - "), (DefaultTableModel) CATable1.getModel());
         }
     }//GEN-LAST:event_CAAutorConsultarBTActionPerformed
 
@@ -1862,7 +1763,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ShowLibrosCB;
     private javax.swing.JButton ShowLibrosConsultarBT;
     private javax.swing.JTable ShowLibrosTable;
-    private javax.swing.JButton ShowPersonasConsultar;
+    private javax.swing.JButton ShowPersonasConsultarBT;
     private javax.swing.JTable ShowPersonasTable;
     private javax.swing.JButton ShowStandsConsultarBT;
     private javax.swing.JTable ShowStandsTable;

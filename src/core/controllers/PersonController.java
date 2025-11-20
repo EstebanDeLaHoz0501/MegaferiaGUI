@@ -14,6 +14,9 @@ import core.models.person.author.Author;
 import core.models.person.Manager;
 import core.models.person.narrator.Narrator;
 import core.models.person.Person;
+import core.models.person.author.AuthorGetBookQuantity;
+import core.models.person.narrator.NarratorGetBookQuantity;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -118,5 +121,23 @@ public class PersonController {
         
         return new Response(true, "Validación exitosa.", Status.OK);
     }
-    
+    public Response ShowPersonas (DefaultTableModel model){
+        AuthorGetBookQuantity agbq = new AuthorGetBookQuantity();
+        NarratorGetBookQuantity ngbq = new NarratorGetBookQuantity();
+        if(this.megaferia.getManagers().isEmpty() & this.megaferia.getNarrators().isEmpty() & this.megaferia.getAuthors().isEmpty())
+            return new Response(false, "No hay personas en la base de datos", Status.NO_CONTENT);
+        else{
+            model.setRowCount(0);
+            for (Author author : megaferia.getAuthors()) {
+                model.addRow(new Object[]{author.getId(), author.getFullname(), "Autor", "-", agbq.getBookQuantity(author)});
+            }
+            for (Manager manager : megaferia.getManagers()) {
+                model.addRow(new Object[]{manager.getId(), manager.getFullname(), "Gerente", manager.getPublisher().getName(), 0});
+            }
+            for (Narrator narrator : megaferia.getNarrators()) {
+                model.addRow(new Object[]{narrator.getId(), narrator.getFullname(), "Narrador", "-", ngbq.getBookQuantity(narrator)});
+            }
+            return new Response(true, "Editoriales válidas", Status.OK);
+        }
+    }
 }
