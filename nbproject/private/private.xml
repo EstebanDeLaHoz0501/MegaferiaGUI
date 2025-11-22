@@ -12,24 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/main/Main.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/IMegaferiaContext.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/Megaferia.java</file>
             <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/controllers/BookController.java</file>
             <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/controllers/EditorialController.java</file>
             <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/controllers/PersonController.java</file>
             <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/controllers/StandController.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfAddAuthor.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfAddBook.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfAddManager.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfAddNarrator.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfAddPublisher.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfAddStand.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfGetAuthor.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfGetManager.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfGetNarrator.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/models/megaferia/MfGetPublisher.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/GitHub/MegaferiaGUI/src/core/views/MegaferiaFrame.java</file>
         </group>
     </open-files>
 </project-private>

@@ -93,12 +93,12 @@ public class EditorialController {
             }
         }); 
         
-        PublisherGetStandQuantity pgsq = new PublisherGetStandQuantity();
+        PublisherGetStandQuantity contadorStands = new PublisherGetStandQuantity(); 
         for (Publisher p : lista) {
             filas.add(new Object[]{
                 p.getNit(), p.getName(), p.getAddress(),
                 p.getManager().getFullname(),
-                pgsq.publisherGetStandQuantity(p)
+                contadorStands.publisherGetStandQuantity(p)
             });
         }
         return new Response(true, "Datos obtenidos", Status.OK, filas);

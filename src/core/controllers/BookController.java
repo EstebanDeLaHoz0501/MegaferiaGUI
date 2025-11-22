@@ -33,15 +33,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class BookController {
     
-// CAMBIO 1: Usar la interfaz
     private core.models.megaferia.IMegaferiaContext megaferia; 
-
-    // CAMBIO 2: Recibir por constructor (Inyección)
     public BookController(core.models.megaferia.IMegaferiaContext megaferia) {
         this.megaferia = megaferia;
     }
 
-    // --- 1. Método de Validación (Reutilizable) ---
     private Response validarDatosComunes(String titulo, String isbn, double valor, String editorialNit, ArrayList<Long> autoresIds) {
         if (titulo.isEmpty() || isbn.isEmpty() || editorialNit.isEmpty() || autoresIds.isEmpty()) {
             return new Response(false, "Error: Todos los campos obligatorios deben ser llenados.", Status.BAD_REQUEST);
@@ -51,12 +47,10 @@ public class BookController {
             return new Response(false, "Error: El valor debe ser superior a 0.", Status.BAD_REQUEST);
         }
         
-        // Validación estricta del formato ISBN (XXX-X-XX-XXXXXX-X)
         if (!isbn.matches("\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}")) {
             return new Response(false, "Error: El ISBN no cumple el formato XXX-X-XX-XXXXXX-X.", Status.BAD_REQUEST);
         }
         
-        // Validación de ISBN único
         for (Book b : megaferia.getBooks()) {
             if (b.getIsbn().equals(isbn)) {
                 return new Response(false, "Error: El ISBN ya existe en el sistema.", Status.BAD_REQUEST);
@@ -66,21 +60,18 @@ public class BookController {
         return new Response(true, "Validación exitosa", Status.OK);
     }
 
-    // --- 2. Crear Libro Impreso ---
     public Response crearLibroImpreso(String titulo, String isbn, String genero, String formato, String valorStr, String editorialStr, String autoresStr, String paginasStr, String ejemplaresStr) {
         try {
             double valor = Double.parseDouble(valorStr);
             int paginas = Integer.parseInt(paginasStr);
             int ejemplares = Integer.parseInt(ejemplaresStr);
             
-            // Extraer el NIT del String "Nombre (NIT)" que viene de la vista
             String editorialNit = extraerNit(editorialStr);
             ArrayList<Long> autoresIds = procesarAutores(autoresStr);
 
             Response validacion = validarDatosComunes(titulo, isbn, valor, editorialNit, autoresIds);
             if (!validacion.isSuccess()) return validacion;
 
-            // Buscar objetos usando las clases Helper (SRP) 
             Publisher publisher = new MfGetPublisher().getPublisher(megaferia, editorialNit); 
             if (publisher == null) return new Response(false, "Error: Editorial no encontrada.", Status.NOT_FOUND);
             
@@ -97,7 +88,6 @@ public class BookController {
         }
     }
 
-    // --- 3. Crear Libro Digital ---
     public Response crearLibroDigital(String titulo, String isbn, String genero, String formato, String valorStr, String editorialStr, String autoresStr, String hipervinculo) {
         try {
             double valor = Double.parseDouble(valorStr);
@@ -124,7 +114,6 @@ public class BookController {
         }
     }
 
-    // --- 4. Crear Audio Libro ---
     public Response crearAudioLibro(String titulo, String isbn, String genero, String formato, String valorStr, String editorialStr, String autoresStr, String duracionStr, String narradorStr) {
         try {
             double valor = Double.parseDouble(valorStr);
@@ -147,7 +136,6 @@ public class BookController {
             Audiobook book = new Audiobook(titulo, authors, isbn, genero, formato, valor, publisher, duracion, narrator);
             
             guardarLibro(book, publisher, authors);
-            // Vinculación extra para audiolibros
             new NarratorAddBook().addBook(narrator, book);
 
             return new Response(true, "Audiolibro creado con éxito.", Status.CREATED);
@@ -168,11 +156,11 @@ public class BookController {
         return new Response(true, "Libros listados correctamente", Status.OK, filas);
     }
     
-    public Response buscarPorAutor(String[] authorData) {
-        MfGetAuthor mfga = new MfGetAuthor();
+    public Response buscarPorAutor(String[] authorData) {               
+        MfGetAuthor buscadorAutor = new MfGetAuthor();                                            
         try {
             long authorId = Long.parseLong(authorData[0]);
-            Author author = mfga.getAuthor(this.megaferia, authorId);
+            Author author = buscadorAutor.getAuthor(this.megaferia, authorId);
             
             if (author == null || author.getBooks().isEmpty()) {
                 return new Response(false, "Este autor no tiene libros", Status.NO_CONTENT);

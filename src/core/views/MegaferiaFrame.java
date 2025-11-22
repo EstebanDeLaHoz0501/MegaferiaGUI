@@ -8,7 +8,7 @@ import core.controllers.StandController;
 import com.formdev.flatlaf.FlatDarkLaf;
 import core.controllers.BookController; 
 import core.controllers.EditorialController;
-import core.controllers.PersonController;
+import core.controllers.PersonController; 
 import core.models.book.Audiobook;
 import core.models.person.author.Author;
 import core.models.book.Book;
@@ -1489,7 +1489,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
             EditorialNITTF.setText("");
             EditorialNombreTF.setText("");
             EditorialDireccionTF.setText("");
-            EditorialGerenteCB.setSelectedIndex(0); // Vuelve a "Seleccione uno..."
+            EditorialGerenteCB.setSelectedIndex(0); 
         }
     }//GEN-LAST:event_EditorialCrearBTActionPerformed
 
@@ -1593,8 +1593,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         
         if (response.isSuccess()) {
             CSStandsTA.setText("");
-            CSEditorialesTA.setText("");
-            
+            CSEditorialesTA.setText("");           
             if (CSIDStandsCB.getItemCount() > 0) CSIDStandsCB.setSelectedIndex(0);
             if (CSEditorialesCB.getItemCount() > 0) CSEditorialesCB.setSelectedIndex(0);
         }

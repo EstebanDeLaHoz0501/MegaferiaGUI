@@ -126,7 +126,6 @@ public Response listarPersonas() {
         ArrayList<Object[]> filas = new ArrayList<>();
         ArrayList<Person> todas = new ArrayList<>();
         
-        // Unir todas las listas
         todas.addAll(megaferia.getAuthors());
         todas.addAll(megaferia.getManagers());
         todas.addAll(megaferia.getNarrators());
@@ -135,7 +134,6 @@ public Response listarPersonas() {
             return new Response(false, "No hay personas registradas", Status.NO_CONTENT);
         }
 
-        // REQUISITO PDF: Ordenar por ID
         java.util.Collections.sort(todas, new java.util.Comparator<Person>() {
             @Override
             public int compare(Person p1, Person p2) {
@@ -143,8 +141,8 @@ public Response listarPersonas() {
             }
         });
 
-        AuthorGetBookQuantity agbq = new AuthorGetBookQuantity();
-        NarratorGetBookQuantity ngbq = new NarratorGetBookQuantity();
+        AuthorGetBookQuantity contadorLibros = new AuthorGetBookQuantity();
+        NarratorGetBookQuantity contadorAudio = new NarratorGetBookQuantity();
 
         for (Person p : todas) {
             String tipo = "";
@@ -153,14 +151,14 @@ public Response listarPersonas() {
 
             if (p instanceof Author) {
                 tipo = "Autor";
-                detalle2 = agbq.getBookQuantity((Author)p);
+                detalle2 = contadorLibros.getBookQuantity((Author)p);
             } else if (p instanceof Manager) {
                 tipo = "Gerente";
                 Manager m = (Manager) p;
                 if (m.getPublisher() != null) detalle1 = m.getPublisher().getName();
             } else if (p instanceof Narrator) {
                 tipo = "Narrador";
-                detalle2 = ngbq.getBookQuantity((Narrator)p);
+                detalle2 = contadorAudio.getBookQuantity((Narrator)p); 
             }
             
             filas.add(new Object[]{p.getId(), p.getFullname(), tipo, detalle1, detalle2});

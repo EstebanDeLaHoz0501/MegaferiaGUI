@@ -12,7 +12,7 @@ import core.models.megaferia.MfAddStand;
 import core.models.publisher.Publisher;
 import core.models.stand.Stand;
 import core.models.stand.StandGetPublisherQuantity;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel; 
 
 /**
  *
@@ -26,7 +26,7 @@ public class StandController {
         this.megaferia = megaferia;
     } 
     
-    public Response crearStand(String idStr, String precioStr) { 
+    public Response crearStand(String idStr, String precioStr) {  
         
         //Validacion (de los 15 digitos totales) -Fernando
         long id;
@@ -142,10 +142,10 @@ public Response listarStands() {
             }
         });
 
-        StandGetPublisherQuantity sgbq = new StandGetPublisherQuantity();
-        for (Stand s : lista) {
+        StandGetPublisherQuantity contadorEditoriales = new StandGetPublisherQuantity(); 
+        for (Stand s : lista) { 
             String publishers = "";
-            int qty = sgbq.getPublisherQuantity(s);
+            int qty = contadorEditoriales.getPublisherQuantity(s);
             if (qty > 0) {
                 publishers += s.getPublishers().get(0).getName();
                 for (int i = 1; i < qty; i++) {
