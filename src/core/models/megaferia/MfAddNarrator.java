@@ -11,7 +11,7 @@ import core.models.person.narrator.Narrator;
  * @author Esteban
  */
 public class MfAddNarrator {
-    public void addNarrator(Megaferia mf, Narrator narrator){
+    public void addNarrator(IMegaferiaContext mf, Narrator narrator){ 
         mf.getNarrators().add(narrator);
-    }
+    } 
 }

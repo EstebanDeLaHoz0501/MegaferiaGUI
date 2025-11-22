@@ -13,7 +13,7 @@ import core.models.stand.Stand;
  * @author Esteban
  */
 public class PublisherAddStand {
-    public void publisherAddBook(Publisher publisher, Stand stand){
-        publisher.getStands().add(stand);
+    public void publisherAddStand(Publisher publisher, Stand stand){
+        publisher.getStands().add(stand); 
     }
 }

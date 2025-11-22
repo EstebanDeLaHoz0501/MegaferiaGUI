@@ -16,6 +16,7 @@ import core.models.person.narrator.Narrator;
 import core.models.person.Person;
 import core.models.person.author.AuthorGetBookQuantity;
 import core.models.person.narrator.NarratorGetBookQuantity;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,10 +25,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PersonController {
     
-    private Megaferia megaferia;
+    private core.models.megaferia.IMegaferiaContext megaferia;  
 
-    public PersonController() {
-        this.megaferia = Megaferia.getInstance();
+    public PersonController(core.models.megaferia.IMegaferiaContext megaferia) {
+        this.megaferia = megaferia;
     }
 
     // Crear autor
@@ -41,7 +42,7 @@ public class PersonController {
         
         long id = Long.parseLong(idStr);
 
-        Author nuevoAutor = new Author(id, nombre, apellido);
+        Author nuevoAutor = new Author(id, nombre, apellido); 
 
         MfAddAuthor mfAdd = new MfAddAuthor();
         mfAdd.addAuthor(megaferia, nuevoAutor);
@@ -121,23 +122,49 @@ public class PersonController {
         
         return new Response(true, "Validación exitosa.", Status.OK);
     }
-    public Response ShowPersonas (DefaultTableModel model){
+public Response listarPersonas() { 
+        ArrayList<Object[]> filas = new ArrayList<>();
+        ArrayList<Person> todas = new ArrayList<>();
+        
+        // Unir todas las listas
+        todas.addAll(megaferia.getAuthors());
+        todas.addAll(megaferia.getManagers());
+        todas.addAll(megaferia.getNarrators());
+        
+        if (todas.isEmpty()) {
+            return new Response(false, "No hay personas registradas", Status.NO_CONTENT);
+        }
+
+        // REQUISITO PDF: Ordenar por ID
+        java.util.Collections.sort(todas, new java.util.Comparator<Person>() {
+            @Override
+            public int compare(Person p1, Person p2) {
+                return Long.compare(p1.getId(), p2.getId());
+            }
+        });
+
         AuthorGetBookQuantity agbq = new AuthorGetBookQuantity();
         NarratorGetBookQuantity ngbq = new NarratorGetBookQuantity();
-        if(this.megaferia.getManagers().isEmpty() & this.megaferia.getNarrators().isEmpty() & this.megaferia.getAuthors().isEmpty())
-            return new Response(false, "No hay personas en la base de datos", Status.NO_CONTENT);
-        else{
-            model.setRowCount(0);
-            for (Author author : megaferia.getAuthors()) {
-                model.addRow(new Object[]{author.getId(), author.getFullname(), "Autor", "-", agbq.getBookQuantity(author)});
+
+        for (Person p : todas) {
+            String tipo = "";
+            String detalle1 = "-";
+            int detalle2 = 0;
+
+            if (p instanceof Author) {
+                tipo = "Autor";
+                detalle2 = agbq.getBookQuantity((Author)p);
+            } else if (p instanceof Manager) {
+                tipo = "Gerente";
+                Manager m = (Manager) p;
+                if (m.getPublisher() != null) detalle1 = m.getPublisher().getName();
+            } else if (p instanceof Narrator) {
+                tipo = "Narrador";
+                detalle2 = ngbq.getBookQuantity((Narrator)p);
             }
-            for (Manager manager : megaferia.getManagers()) {
-                model.addRow(new Object[]{manager.getId(), manager.getFullname(), "Gerente", manager.getPublisher().getName(), 0});
-            }
-            for (Narrator narrator : megaferia.getNarrators()) {
-                model.addRow(new Object[]{narrator.getId(), narrator.getFullname(), "Narrador", "-", ngbq.getBookQuantity(narrator)});
-            }
-            return new Response(true, "Editoriales válidas", Status.OK);
+            
+            filas.add(new Object[]{p.getId(), p.getFullname(), tipo, detalle1, detalle2});
         }
+        return new Response(true, "Datos obtenidos", Status.OK, filas);
     }
 }

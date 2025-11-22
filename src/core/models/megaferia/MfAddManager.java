@@ -11,7 +11,7 @@ import core.models.person.Manager;
  * @author Esteban
  */
 public class MfAddManager {
-    public void addManager(Megaferia mf, Manager manager){
+    public void addManager(IMegaferiaContext mf, Manager manager){ 
         mf.getManagers().add(manager);
     }
 }

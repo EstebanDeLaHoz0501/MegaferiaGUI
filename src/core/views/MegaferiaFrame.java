@@ -6,7 +6,7 @@ package core.views;
 
 import core.controllers.StandController;
 import com.formdev.flatlaf.FlatDarkLaf;
-import core.controllers.BookController;
+import core.controllers.BookController; 
 import core.controllers.EditorialController;
 import core.controllers.PersonController;
 import core.models.book.Audiobook;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import core.controllers.utils.Response;
-import javax.swing.JOptionPane;
+import javax.swing.JOptionPane; 
 
 
 /**
@@ -42,10 +42,15 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     public MegaferiaFrame() {
         initComponents();
         setLocationRelativeTo(null);
-        this.standController = new StandController();           
-        this.personaController = new PersonController();      
-        this.editorialController = new EditorialController();   
-        this.bookController = new BookController();            
+        initComponents();
+        setLocationRelativeTo(null); 
+        
+        core.models.megaferia.IMegaferiaContext context = core.models.megaferia.Megaferia.getInstance();
+        
+        this.standController = new StandController(context);            
+        this.personaController = new PersonController(context);       
+        this.editorialController = new EditorialController(context);    
+        this.bookController = new BookController(context);           
 
     
     }
@@ -1489,13 +1494,16 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EditorialCrearBTActionPerformed
 
     private void LibroAgregarAutorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibroAgregarAutorBTActionPerformed
-        // TODO add your handling code here:
-        String author = LibroAutoresCB.getItemAt(LibroAutoresCB.getSelectedIndex());
-        LibroTA.append(author + "\n");              
+           String author = LibroAutoresCB.getItemAt(LibroAutoresCB.getSelectedIndex());
+           
+        if (!LibroTA.getText().contains(author)) {
+            LibroTA.append(author + "\n"); 
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "El autor ya fue agregado a la lista.");
+        }             
     }//GEN-LAST:event_LibroAgregarAutorBTActionPerformed
 
     private void LibroEliminarAutorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibroEliminarAutorBTActionPerformed
-        // TODO add your handling code here:
         String author = LibroAutoresCB.getItemAt(LibroAutoresCB.getSelectedIndex());
         LibroTA.setText(LibroTA.getText().replace(author + "\n", ""));    
     }//GEN-LAST:event_LibroEliminarAutorBTActionPerformed
@@ -1545,21 +1553,29 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_LibroCrearBTActionPerformed
 
     private void CSAgregarStandBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSAgregarStandBTActionPerformed
-        // TODO add your handling code here:
         String stand = CSIDStandsCB.getItemAt(CSIDStandsCB.getSelectedIndex());
-        CSStandsTA.append(stand + "\n");
+        
+        if (!CSStandsTA.getText().contains(stand)) {
+            CSStandsTA.append(stand + "\n");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "El Stand ya fue agregado a la lista.");
+        }
     }//GEN-LAST:event_CSAgregarStandBTActionPerformed
 
     private void CSEliminarStandBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSEliminarStandBTActionPerformed
         // TODO add your handling code here:
         String stand = CSIDStandsCB.getItemAt(CSIDStandsCB.getSelectedIndex());
-        CSStandsTA.setText(CSStandsTA.getText().replace(stand + "\n", ""));
+        CSStandsTA.setText(CSStandsTA.getText().replace(stand + "\n", ""));  
     }//GEN-LAST:event_CSEliminarStandBTActionPerformed
 
     private void CSAgregarEditorialBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSAgregarEditorialBTActionPerformed
-        // TODO add your handling code here:
         String publisher = CSEditorialesCB.getItemAt(CSEditorialesCB.getSelectedIndex());
-        CSEditorialesTA.append(publisher + "\n");
+
+        if (!CSEditorialesTA.getText().contains(publisher)) { 
+            CSEditorialesTA.append(publisher + "\n");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "La Editorial ya fue agregada a la lista.");
+        }
     }//GEN-LAST:event_CSAgregarEditorialBTActionPerformed
 
     private void CSEliminarEditorialBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSEliminarEditorialBTActionPerformed
@@ -1585,41 +1601,98 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CSComprarBTActionPerformed
 
     private void ShowEditorialesConsutarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowEditorialesConsutarBTActionPerformed
-        // TODO add your handling code here:
-        Response response = this.editorialController.ShowPublishers((DefaultTableModel) ShowEditorialesTable.getModel());
+        DefaultTableModel model = (DefaultTableModel) ShowEditorialesTable.getModel();
+        model.setRowCount(0);
+        
+        Response response = this.editorialController.listarEditoriales();
+        
+        if (response.isSuccess()) {
+            ArrayList<Object[]> datos = (ArrayList<Object[]>) response.getObject();
+            for (Object[] fila : datos) {
+                model.addRow(fila);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+        }
     }//GEN-LAST:event_ShowEditorialesConsutarBTActionPerformed
-
+ 
     private void ShowPersonasConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPersonasConsultarBTActionPerformed
-        // TODO add your handling code here:
-        Response response = this.personaController.ShowPersonas((DefaultTableModel) ShowPersonasTable.getModel());
-//
+        DefaultTableModel model = (DefaultTableModel) ShowPersonasTable.getModel();
+        model.setRowCount(0);
+        
+        Response response = this.personaController.listarPersonas();
+        
+        if (response.isSuccess()) {
+            ArrayList<Object[]> datos = (ArrayList<Object[]>) response.getObject();
+            for (Object[] fila : datos) {
+                model.addRow(fila);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+        }
     }//GEN-LAST:event_ShowPersonasConsultarBTActionPerformed
 
     private void ShowStandsConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowStandsConsultarBTActionPerformed
-        // TODO add your handling code here:
-        Response response = this.standController.ShowStands((DefaultTableModel) ShowStandsTable.getModel());
+        DefaultTableModel model = (DefaultTableModel) ShowStandsTable.getModel();
+        model.setRowCount(0);
+        
+        Response response = this.standController.listarStands();
+        
+        if (response.isSuccess()) {
+            ArrayList<Object[]> datos = (ArrayList<Object[]>) response.getObject();
+            for (Object[] fila : datos) {
+                model.addRow(fila);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+        }
     }//GEN-LAST:event_ShowStandsConsultarBTActionPerformed
 
     private void ShowLibrosConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowLibrosConsultarBTActionPerformed
-        // TODO add your handling code here:
-        Response response = this.bookController.ShowBooks((DefaultTableModel) ShowLibrosTable.getModel(),ShowLibrosCB.getItemAt(ShowLibrosCB.getSelectedIndex()) );
+        DefaultTableModel model = (DefaultTableModel) ShowLibrosTable.getModel();
+        model.setRowCount(0);
+       
+        String search = (String) ShowLibrosCB.getSelectedItem();
+        
+        Response response = this.bookController.listarLibros(search);
+        
+        if (response.isSuccess()) {
+            ArrayList<Object[]> datos = (ArrayList<Object[]>) response.getObject();
+            for (Object[] fila : datos) {
+                model.addRow(fila);
+            }
+        } else {
+            if (response.getStatus() != core.controllers.utils.Status.NO_CONTENT) {
+                 javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+            }
+        }
     }//GEN-LAST:event_ShowLibrosConsultarBTActionPerformed
-
+ 
     private void CAAutorConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CAAutorConsultarBTActionPerformed
-        // TODO add your handling code here:
         int index = CAAutorCB.getSelectedIndex();
-        if (index == -1) {
+        if (index == -1 || CAAutorCB.getSelectedItem().equals("Seleccione uno...")) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un autor.");
             return;
-        }else{
-            Response response = this.bookController.buscarPorAutor(CAAutorCB.getItemAt(CAAutorCB.getSelectedIndex()).split(" - "), (DefaultTableModel) CATable1.getModel());
         }
-    }//GEN-LAST:event_CAAutorConsultarBTActionPerformed
+        
+        DefaultTableModel model = (DefaultTableModel) CATable1.getModel();
+        model.setRowCount(0);
 
+        String[] authorData = ((String) CAAutorCB.getSelectedItem()).split(" - ");      
+        Response response = this.bookController.buscarPorAutor(authorData);
+        
+        if (response.isSuccess()) {
+            ArrayList<Object[]> datos = (ArrayList<Object[]>) response.getObject();
+            for (Object[] fila : datos) {
+                model.addRow(fila);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+        } 
+    }//GEN-LAST:event_CAAutorConsultarBTActionPerformed
+  
     private void CAFormatoConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CAFormatoConsultarBTActionPerformed
         String format = CAFormatoCB.getItemAt(CAFormatoCB.getSelectedIndex());
-
-        // Preparar la tabla
         DefaultTableModel model = (DefaultTableModel) CATable1.getModel();
         model.setRowCount(0);
 
@@ -1635,10 +1708,8 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CAFormatoConsultarBTActionPerformed
 
     private void CATable2ConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CATable2ConsultarBTActionPerformed
-        // TODO add your handling code here:
-        Response response = this.bookController.getAuthorsWithMaxPublishers();
+     Response response = this.bookController.getAuthorsWithMaxPublishers();
         
-        // Limpiar la tabla
         DefaultTableModel model = (DefaultTableModel) CATable2.getModel();
         model.setRowCount(0); 
         
@@ -1648,27 +1719,27 @@ public class MegaferiaFrame extends javax.swing.JFrame {
                 model.addRow(new Object[]{author.getId(), author.getFullname()});
             }
         }
-            
+        
     }//GEN-LAST:event_CATable2ConsultarBTActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        System.setProperty("flatlaf.useNativeLibrary", "false");
-        
-        try {
-            UIManager.setLookAndFeel(new FlatDarkLaf());
-        } catch (Exception ex) {
-            System.err.println("Failed to initialize LaF");
-        }
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MegaferiaFrame().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        System.setProperty("flatlaf.useNativeLibrary", "false");
+//        
+//        try {
+//            UIManager.setLookAndFeel(new FlatDarkLaf());
+//        } catch (Exception ex) {
+//            System.err.println("Failed to initialize LaF");               // Ya hicimos otro main, esto incumple el pdf... borar alguien mas si quiere -Fernando
+//        }
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new MegaferiaFrame().setVisible(true);
+//            }
+//        });    
+//    } 
     
     // Método auxiliar para limpiar el formulario de Libros después de crear uno    -Fernando 
     // No estoy del todo seguro si dejar esto aqui

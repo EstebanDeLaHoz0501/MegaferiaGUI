@@ -20,13 +20,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class StandController {  
     
-    private Megaferia megaferia;
+    private core.models.megaferia.IMegaferiaContext megaferia; 
     
-    public StandController() {
-        this.megaferia = Megaferia.getInstance();
-    }
+    public StandController(core.models.megaferia.IMegaferiaContext megaferia) {
+        this.megaferia = megaferia;
+    } 
     
-    public Response crearStand(String idStr, String precioStr) {
+    public Response crearStand(String idStr, String precioStr) { 
         
         //Validacion (de los 15 digitos totales) -Fernando
         long id;
@@ -118,32 +118,42 @@ public class StandController {
 
         for (Stand stand : selectedStands) {
             for (Publisher pub : selectedPublishers) {
-                if (!stand.getPublishers().contains(pub)) {
+                if (!stand.getPublishers().contains(pub)) { 
                     standAdder.addPublisher(stand, pub);
-                    pubAdder.publisherAddBook(pub, stand); 
+                    pubAdder.publisherAddStand(pub, stand);                                 ////////////////////////////////////////////////////////////Cambie el nombre de un metodo -Fernando
                 }
             }
-        }
+        } 
 
         return new Response(true, "Compra realizada con éxito. Los stands han sido asignados.", Status.OK); 
     }
-    public Response ShowStands (DefaultTableModel model){
-        if(this.megaferia.getStands().isEmpty())
-            return new Response(false, "No hay Stands en la base de datos", Status.NO_CONTENT);
-        else{       
-            model.setRowCount(0);
-            StandGetPublisherQuantity sgbq = new StandGetPublisherQuantity();
-            for (Stand stand : this.megaferia.getStands()) {
-                String publishers = "";
-                if (sgbq.getPublisherQuantity(stand) > 0) {
-                    publishers += stand.getPublishers().get(0).getName();
-                    for (int i = 1; i < sgbq.getPublisherQuantity(stand); i++) {
-                        publishers += (", " + stand.getPublishers().get(i).getName());
-                    }
-                }
-                model.addRow(new Object[]{stand.getId(), stand.getPrice(), sgbq.getPublisherQuantity(stand) > 0 ? "Si" : "No", publishers});
-            }
-            return new Response(true, "Editoriales válidas", Status.OK);
+public Response listarStands() {
+        if (this.megaferia.getStands().isEmpty()) {
+            return new Response(false, "No hay Stands registrados", Status.NO_CONTENT);
         }
-    }
-}
+
+        ArrayList<Object[]> filas = new ArrayList<>();
+        ArrayList<Stand> lista = new ArrayList<>(this.megaferia.getStands());
+
+        java.util.Collections.sort(lista, new java.util.Comparator<Stand>() {
+            @Override
+            public int compare(Stand s1, Stand s2) {
+                return Long.compare(s1.getId(), s2.getId());
+            }
+        });
+
+        StandGetPublisherQuantity sgbq = new StandGetPublisherQuantity();
+        for (Stand s : lista) {
+            String publishers = "";
+            int qty = sgbq.getPublisherQuantity(s);
+            if (qty > 0) {
+                publishers += s.getPublishers().get(0).getName();
+                for (int i = 1; i < qty; i++) {
+                    publishers += (", " + s.getPublishers().get(i).getName());
+                }
+            }
+            filas.add(new Object[]{s.getId(), s.getPrice(), qty > 0 ? "Si" : "No", publishers});
+        }
+        return new Response(true, "Datos obtenidos", Status.OK, filas);
+    } 
+} 

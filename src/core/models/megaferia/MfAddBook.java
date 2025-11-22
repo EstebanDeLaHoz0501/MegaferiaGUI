@@ -11,7 +11,7 @@ import core.models.book.Book;
  * @author Esteban
  */
 public class MfAddBook {
-    public void addBook(Megaferia mf, Book book){
+    public void addBook(IMegaferiaContext mf, Book book){ 
         mf.getBooks().add(book);
     }
 }

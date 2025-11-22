@@ -11,7 +11,7 @@ import core.models.stand.Stand;
  * @author Esteban
  */
 public class MfAddStand {
-    public void addStand(Megaferia mf, Stand stand){
+ public void addStand(IMegaferiaContext mf, Stand stand){ 
         mf.getStands().add(stand);
     }
 }

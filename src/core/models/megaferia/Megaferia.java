@@ -16,7 +16,7 @@ import core.models.person.narrator.Narrator;
  *
  * @author Esteban
  */
-public class Megaferia {
+public class Megaferia implements IMegaferiaContext { 
     
     private static Megaferia instance;
     private ArrayList<Stand> stands;
@@ -24,7 +24,7 @@ public class Megaferia {
     private ArrayList<Manager> managers;
     private ArrayList<Narrator> narrators;
     private ArrayList<Publisher> publishers;
-    private ArrayList<Book> books;
+    private ArrayList<Book> books;  
     
     private Megaferia() {
         this.stands = new ArrayList<>();

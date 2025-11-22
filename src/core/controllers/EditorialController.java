@@ -20,12 +20,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EditorialController {
     
-    private Megaferia megaferia;
-
-
-    public EditorialController() {
-        this.megaferia = Megaferia.getInstance();
-        
+    private core.models.megaferia.IMegaferiaContext megaferia;  
+    public EditorialController(core.models.megaferia.IMegaferiaContext megaferia) {
+        this.megaferia = megaferia;
     }
 
 
@@ -80,24 +77,31 @@ public class EditorialController {
 
         return new Response(true, "Editorial " + nombre + " creada con éxito.", Status.CREATED);
     }
-    public Response ShowPublishers (DefaultTableModel model){
-        if(this.megaferia.getPublishers().isEmpty())
+    
+    public Response listarEditoriales() {
+        if (this.megaferia.getPublishers().isEmpty()) {
             return new Response(false, "No hay editoriales en la base de datos", Status.NO_CONTENT);
-        else{
-            
-            model.setRowCount(0);
-            PublisherGetStandQuantity pgsq = new PublisherGetStandQuantity(); 
-            for (Publisher publisher : megaferia.getPublishers()) {
-                model.addRow(new Object[]{
-                    publisher.getNit(),
-                    publisher.getName(),
-                    publisher.getAddress(),
-                    publisher.getManager().getFullname(),
-                    pgsq.publisherGetStandQuantity(publisher)
-                });
-            }
-            return new Response(true, "Editoriales válidas", Status.OK);
         }
+        
+        ArrayList<Object[]> filas = new ArrayList<>();
+        ArrayList<Publisher> lista = new ArrayList<>(megaferia.getPublishers());
+       
+        java.util.Collections.sort(lista, new java.util.Comparator<Publisher>() {
+            @Override
+            public int compare(Publisher p1, Publisher p2) {
+                return p1.getNit().compareTo(p2.getNit());
+            }
+        }); 
+        
+        PublisherGetStandQuantity pgsq = new PublisherGetStandQuantity();
+        for (Publisher p : lista) {
+            filas.add(new Object[]{
+                p.getNit(), p.getName(), p.getAddress(),
+                p.getManager().getFullname(),
+                pgsq.publisherGetStandQuantity(p)
+            });
+        }
+        return new Response(true, "Datos obtenidos", Status.OK, filas);
     }
     
 }

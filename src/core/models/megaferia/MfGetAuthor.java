@@ -11,11 +11,9 @@ import core.models.person.author.Author;
  * @author Esteban
  */
 public class MfGetAuthor {
-    public Author getAuthor(Megaferia mf, long id){    ///////////////// Cambie el dato recibido de int a long porque int son 10 digitos y el formulario pidio 15 digitos maximo - Fernando
+    public Author getAuthor(IMegaferiaContext mf, long id){ 
         for (Author auth : mf.getAuthors()) {
-            if (auth.getId() == id) { /////////////MfGetAuthor
-                return auth;
-            }
+            if (auth.getId() == id) return auth;
         }
         return null;
     }

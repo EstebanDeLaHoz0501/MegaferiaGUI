@@ -11,7 +11,7 @@ import core.models.publisher.Publisher;
  * @author Esteban
  */
 public class MfAddPublisher {
-    public void addPublisher(Megaferia mf, Publisher publisher){
+    public void addPublisher(IMegaferiaContext mf, Publisher publisher){ 
         mf.getPublishers().add(publisher);
     }
 }

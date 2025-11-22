@@ -11,7 +11,7 @@ import core.models.person.author.Author;
  * @author Esteban
  */
 public class MfAddAuthor {
-    public void addAuthor(Megaferia mf, Author author){
-        mf.getAuthors().add(author);
+    public void addAuthor(IMegaferiaContext mf, Author author){ 
+        mf.getAuthors().add(author); 
     }
 }
