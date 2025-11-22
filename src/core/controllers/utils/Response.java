@@ -13,11 +13,19 @@ public class Response {             // Cree las respuestas porque sino tenia que
     private boolean success;
     private String message;
     private int status;
+    private Object object;
       
     public Response(boolean success, String message, int status) {
         this.success = success;
         this.message = message;
         this.status = status;
+    }
+    
+    public Response(boolean success, String message, int status, Object object){
+        this.success = success;
+        this.message = message;
+        this.status = status;
+        this.object = object;
     }
     
     public boolean isSuccess() {
@@ -30,6 +38,10 @@ public class Response {             // Cree las respuestas porque sino tenia que
 
     public int getStatus() {
         return status;
+    }
+
+    public Object getObject() {
+        return object;
     }
     
     

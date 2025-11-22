@@ -14,7 +14,7 @@ import core.models.book.Book;
  * @author Esteban
  */
 public class AuthorGetPublisherQuantity {
-    public int getPublisherQuantity(Author au) {
+    public static int getPublisherQuantity(Author au) {
         ArrayList<Publisher> publishers = new ArrayList<>();
         for (Book book : au.getBooks()) {
             if (!publishers.contains(book.getPublisher())) {

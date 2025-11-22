@@ -17,6 +17,7 @@ import core.models.megaferia.MfGetNarrator;
 import core.models.megaferia.MfGetPublisher;
 import core.models.person.author.Author;
 import core.models.person.author.AuthorAddBook;
+import core.models.person.author.AuthorGetPublisherQuantity;
 import core.models.person.narrator.Narrator;
 import core.models.person.narrator.NarratorAddBook;
 import core.models.publisher.Publisher;
@@ -150,6 +151,7 @@ public class BookController {
             return new Response(false, "Error: Verifique duración o valor.", Status.BAD_REQUEST);
         }
     }
+    
     public Response ShowBooks (DefaultTableModel model, String search){
         if(this.megaferia.getBooks().isEmpty())
             return new Response(false, "No hay libros en la base de datos", Status.NO_CONTENT);
@@ -209,6 +211,7 @@ public class BookController {
             return new Response(true, "Editoriales válidas", Status.OK);
         }
     }
+    
     public Response buscarPorAutor(String[] authorData, DefaultTableModel model){
         MfGetAuthor mfga = new MfGetAuthor();
         try{
@@ -243,6 +246,61 @@ public class BookController {
         
         
     }
+    
+
+    public Response filterByFormat(String bookFormat) { 
+        try {
+            ArrayList<Book> filteredBooks = filterBooks(bookFormat);
+            if (filteredBooks.isEmpty()) {
+                return new Response(false, "No hay libros con ese formato", Status.NO_CONTENT);
+            }
+            ArrayList<Object[]> rowsData = new ArrayList<>();
+            for (Book book : filteredBooks) {
+                String authors = book.getAuthors().get(0).getFullname();
+                for (int i = 1; i < book.getAuthors().size(); i++) { 
+                    authors += ", " + book.getAuthors().get(i).getFullname(); 
+                }
+                Object[] row = null;
+
+                if (book instanceof PrintedBook printedBook) {
+                    row = new Object[]{ printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-" };
+                } else if (book instanceof DigitalBook digitalBook) {
+                    row = new Object[]{ digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-" };
+                } else if (book instanceof Audiobook audiobook) {
+                    row = new Object[]{ audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration() };
+                }
+
+                rowsData.add(row);
+            }
+
+            return new Response(true, "Libros filtrados exitosamente", Status.OK, rowsData);
+
+        } catch (Exception e) {
+            return new Response(false, "Error inesperado", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    public Response getAuthorsWithMaxPublishers(){
+        ArrayList<Author> authorsMax = new ArrayList<>();
+        int maxPublishers = -1;
+        try {
+            for (Author author : this.megaferia.getAuthors()) { 
+                if (AuthorGetPublisherQuantity.getPublisherQuantity(author) > maxPublishers) {
+                    maxPublishers = AuthorGetPublisherQuantity.getPublisherQuantity(author);
+                    authorsMax.clear();
+                    authorsMax.add(author);
+                } else if (AuthorGetPublisherQuantity.getPublisherQuantity(author) == maxPublishers) {
+                    authorsMax.add(author);
+                }
+            }
+            return new Response(true, "Autores con más editoriales encontrados", Status.OK ,authorsMax); 
+
+        } catch (Exception e) {
+            return new Response(false, "Error inesperado", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     // --- MÉTODOS PRIVADOS DE AYUDA ---
 
     // Parsea el String "Nombre (NIT)" para sacar solo el NIT
@@ -294,6 +352,18 @@ public class BookController {
         }
     }
     
+    private ArrayList<Book> filterBooks(String bookFormat) {
+        ArrayList<Book> result = new ArrayList<>();
+
+        for (Book book : megaferia.getBooks()) {
+            if (book.getFormat().equals(bookFormat)) {
+                result.add(book);
+            }
+        }
+
+        return result;
+    }
     
     
 }
+

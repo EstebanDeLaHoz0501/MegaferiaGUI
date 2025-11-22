@@ -1617,51 +1617,38 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CAAutorConsultarBTActionPerformed
 
     private void CAFormatoConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CAFormatoConsultarBTActionPerformed
-        // TODO add your handling code here:
         String format = CAFormatoCB.getItemAt(CAFormatoCB.getSelectedIndex());
-        
+
+        // Preparar la tabla
         DefaultTableModel model = (DefaultTableModel) CATable1.getModel();
         model.setRowCount(0);
-        
-        for (Book book : this.books) { 
-            if (book.getFormat().equals(format)) {
-                String authors = book.getAuthors().get(0).getFullname();
-                for (int i = 1; i < book.getAuthors().size(); i++) {
-                    authors += (", " + book.getAuthors().get(i).getFullname());
-                }
-                if (book instanceof PrintedBook printedBook) {
-                    model.addRow(new Object[]{printedBook.getTitle(), authors, printedBook.getIsbn(), printedBook.getGenre(), printedBook.getFormat(), printedBook.getValue(), printedBook.getPublisher().getName(), printedBook.getCopies(), printedBook.getPages(), "-", "-", "-"});
-                }
-                if (book instanceof DigitalBook digitalBook) {
-                    model.addRow(new Object[]{digitalBook.getTitle(), authors, digitalBook.getIsbn(), digitalBook.getGenre(), digitalBook.getFormat(), digitalBook.getValue(), digitalBook.getPublisher().getName(), "-", "-", digitalBook.hasHyperlink() ? digitalBook.getHyperlink() : "No", "-", "-"});
-                }
-                if (book instanceof Audiobook audiobook) {
-                    model.addRow(new Object[]{audiobook.getTitle(), authors, audiobook.getIsbn(), audiobook.getGenre(), audiobook.getFormat(), audiobook.getValue(), audiobook.getPublisher().getName(), "-", "-", "-", audiobook.getNarrador().getFullname(), audiobook.getDuration()});
-                }
+
+        Response response = this.bookController.filterByFormat(format);
+
+        if (response.isSuccess()) {
+            ArrayList<Object[]> rowsData = (ArrayList<Object[]>) response.getObject();
+
+            for (Object[] row : rowsData) {
+                model.addRow(row); 
             }
         }
     }//GEN-LAST:event_CAFormatoConsultarBTActionPerformed
 
     private void CATable2ConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CATable2ConsultarBTActionPerformed
         // TODO add your handling code here:
-        ArrayList<Author> authorsMax = new ArrayList<>();
-        int maxPublishers = -1;
-        for (Author author : this.authors) {
-            if (author.getPublisherQuantity() > maxPublishers) {
-                maxPublishers = author.getPublisherQuantity();      //sale error xq ya ese metodo tiene su propia clase
-                authorsMax.clear();                                 //AuthorGetPublisherQuantity
-                authorsMax.add(author);
-            } else if (author.getPublisherQuantity() == maxPublishers) {
-                authorsMax.add(author);
+        Response response = this.bookController.getAuthorsWithMaxPublishers();
+        
+        // Limpiar la tabla
+        DefaultTableModel model = (DefaultTableModel) CATable2.getModel();
+        model.setRowCount(0); 
+        
+        if (response.isSuccess()) {
+            ArrayList<Author> authorsMax = (ArrayList<Author>) response.getObject();
+            for (Author author : authorsMax) {
+                model.addRow(new Object[]{author.getId(), author.getFullname()});
             }
         }
-        
-        DefaultTableModel model = (DefaultTableModel) CATable2.getModel();
-        model.setRowCount(0);
-        
-        for (Author author : authorsMax) {
-            model.addRow(new Object[]{author.getId(), author.getFullname(), maxPublishers});
-        }
+            
     }//GEN-LAST:event_CATable2ConsultarBTActionPerformed
 
     /**
