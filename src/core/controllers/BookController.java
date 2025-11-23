@@ -38,7 +38,7 @@ public class BookController {
         this.megaferia = megaferia;
     }
 
-    private Response validarDatosComunes(String titulo, String isbn, double valor, String editorialNit, ArrayList<Long> autoresIds) {
+    private Response validarDatosComunes(String titulo, String isbn, double valor, String editorialNit, ArrayList<Long> autoresIds, String formato) {
         if (titulo.isEmpty() || isbn.isEmpty() || editorialNit.isEmpty() || autoresIds.isEmpty()) {
             return new Response(false, "Error: Todos los campos obligatorios deben ser llenados.", Status.BAD_REQUEST);
         }
@@ -49,6 +49,10 @@ public class BookController {
         
         if (!isbn.matches("\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}")) {
             return new Response(false, "Error: El ISBN no cumple el formato XXX-X-XX-XXXXXX-X.", Status.BAD_REQUEST);
+        }
+        
+        if(formato.equals("Seleccione uno...")){
+            return new Response(false, "Error: Seleccione un formato", Status.BAD_REQUEST);
         }
         
         for (Book b : megaferia.getBooks()) {
@@ -69,11 +73,15 @@ public class BookController {
             String editorialNit = extraerNit(editorialStr);
             ArrayList<Long> autoresIds = procesarAutores(autoresStr);
 
-            Response validacion = validarDatosComunes(titulo, isbn, valor, editorialNit, autoresIds);
+            Response validacion = validarDatosComunes(titulo, isbn, valor, editorialNit, autoresIds, formato);
             if (!validacion.isSuccess()) return validacion;
 
             Publisher publisher = new MfGetPublisher().getPublisher(megaferia, editorialNit); 
             if (publisher == null) return new Response(false, "Error: Editorial no encontrada.", Status.NOT_FOUND);
+            
+            if(paginas<=0){
+                return new Response(false, "Error: El libro debe tener al menos una pagina.", Status.BAD_REQUEST);
+            }
             
             ArrayList<Author> authors = obtenerListaAutores(autoresIds);
             
@@ -94,7 +102,7 @@ public class BookController {
             String editorialNit = extraerNit(editorialStr);
             ArrayList<Long> autoresIds = procesarAutores(autoresStr);
 
-            Response validacion = validarDatosComunes(titulo, isbn, valor, editorialNit, autoresIds);
+            Response validacion = validarDatosComunes(titulo, isbn, valor, editorialNit, autoresIds, formato);
             if (!validacion.isSuccess()) return validacion;
 
             Publisher publisher = new MfGetPublisher().getPublisher(megaferia, editorialNit);
@@ -126,7 +134,7 @@ public class BookController {
             }
             long narradorId = Long.parseLong(narradorStr.split(" - ")[0]);
 
-            Response validacion = validarDatosComunes(titulo, isbn, valor, editorialNit, autoresIds);
+            Response validacion = validarDatosComunes(titulo, isbn, valor, editorialNit, autoresIds, formato);
             if (!validacion.isSuccess()) return validacion;
 
             Publisher publisher = new MfGetPublisher().getPublisher(megaferia, editorialNit);
@@ -152,6 +160,12 @@ public class BookController {
         ArrayList<Book> libros = new ArrayList<>(this.megaferia.getBooks());
         ordenarLibrosPorISBN(libros);      
         ArrayList<Object[]> filas = filtrarYFormatearLibros(libros, search);
+        if (search.equals("Seleccione uno...")){
+            return new Response(false, "Seleccione un formato", Status.NO_CONTENT);
+        }
+        if (filas.isEmpty()) {
+            return new Response(false, "No hay libros de este formato", Status.NO_CONTENT);
+        }
         
         return new Response(true, "Libros listados correctamente", Status.OK, filas);
     }
@@ -195,6 +209,9 @@ public Response filterByFormat(String bookFormat) {
     }
     
 public Response getAuthorsWithMaxPublishers() {
+        if (this.megaferia.getAuthors().isEmpty()) {
+            return new Response(false, "No hay autores en la base de datos", Status.NO_CONTENT);
+        }
         ArrayList<Author> authorsMax = new ArrayList<>();
         int maxPublishers = -1;
         

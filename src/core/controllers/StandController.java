@@ -33,7 +33,8 @@ public class StandController {
         try {
             id = Long.parseLong(idStr);
         } catch (NumberFormatException e) {
-            return new Response(false, "Error: El ID debe ser un número.", Status.BAD_REQUEST);
+            System.out.println("ID recibido: '" + idStr + "'");
+            return new Response(false, "Error: El ID debe ser un número.", Status.BAD_REQUEST);          
         }
         
         double precio;

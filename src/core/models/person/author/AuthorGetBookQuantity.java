@@ -11,7 +11,7 @@ package core.models.person.author;
  * @author Esteban
  */
 public class AuthorGetBookQuantity {
-    public int getBookQuantity(Author au) {
+    public static int getBookQuantity(Author au) {
         return au.getBooks().size();
     }
 }

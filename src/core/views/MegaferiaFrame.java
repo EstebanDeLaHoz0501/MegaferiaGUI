@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import core.controllers.utils.Response;
+import core.models.person.author.AuthorGetBookQuantity;
 import javax.swing.JOptionPane; 
 
 
@@ -42,8 +43,7 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     public MegaferiaFrame() {
         initComponents();
         setLocationRelativeTo(null);
-        initComponents();
-        setLocationRelativeTo(null); 
+
         
         core.models.megaferia.IMegaferiaContext context = core.models.megaferia.Megaferia.getInstance();
         
@@ -1494,8 +1494,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EditorialCrearBTActionPerformed
 
     private void LibroAgregarAutorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibroAgregarAutorBTActionPerformed
-           String author = LibroAutoresCB.getItemAt(LibroAutoresCB.getSelectedIndex());
-           
+        String author = LibroAutoresCB.getItemAt(LibroAutoresCB.getSelectedIndex());
+        if(author.equals("Seleccione uno...")){
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un autor");
+            return;
+        }  
         if (!LibroTA.getText().contains(author)) {
             LibroTA.append(author + "\n"); 
         } else {
@@ -1505,7 +1508,15 @@ public class MegaferiaFrame extends javax.swing.JFrame {
 
     private void LibroEliminarAutorBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibroEliminarAutorBTActionPerformed
         String author = LibroAutoresCB.getItemAt(LibroAutoresCB.getSelectedIndex());
-        LibroTA.setText(LibroTA.getText().replace(author + "\n", ""));    
+        if(author.equals("Seleccione uno...")){
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un autor");
+            return;
+        }  
+        if (LibroTA.getText().contains(author)) {
+            LibroTA.setText(LibroTA.getText().replace(author + "\n", ""));
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "El autor no esta en la lista.");
+        }   
     }//GEN-LAST:event_LibroEliminarAutorBTActionPerformed
 
     private void LibroCrearBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibroCrearBTActionPerformed
@@ -1554,10 +1565,16 @@ public class MegaferiaFrame extends javax.swing.JFrame {
 
     private void CSAgregarStandBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSAgregarStandBTActionPerformed
         String stand = CSIDStandsCB.getItemAt(CSIDStandsCB.getSelectedIndex());
-        
+        if(stand.equals("Seleccione uno...")){
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un stand");
+            return;
+        }
+                    
         if (!CSStandsTA.getText().contains(stand)) {
             CSStandsTA.append(stand + "\n");
-        } else {
+        } 
+        
+        else {
             javax.swing.JOptionPane.showMessageDialog(this, "El Stand ya fue agregado a la lista.");
         }
     }//GEN-LAST:event_CSAgregarStandBTActionPerformed
@@ -1565,12 +1582,24 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     private void CSEliminarStandBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSEliminarStandBTActionPerformed
         // TODO add your handling code here:
         String stand = CSIDStandsCB.getItemAt(CSIDStandsCB.getSelectedIndex());
-        CSStandsTA.setText(CSStandsTA.getText().replace(stand + "\n", ""));  
+        if(stand.equals("Seleccione uno...")){
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un stand");
+            return;
+        }
+        if (CSStandsTA.getText().contains(stand)) {
+            CSStandsTA.setText(CSStandsTA.getText().replace(stand + "\n", ""));
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "El Stand no esta en la lista.");
+        }
+        
     }//GEN-LAST:event_CSEliminarStandBTActionPerformed
 
     private void CSAgregarEditorialBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSAgregarEditorialBTActionPerformed
         String publisher = CSEditorialesCB.getItemAt(CSEditorialesCB.getSelectedIndex());
-
+        if(publisher.equals("Seleccione uno...")){
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una editorial");
+            return;
+        }
         if (!CSEditorialesTA.getText().contains(publisher)) { 
             CSEditorialesTA.append(publisher + "\n");
         } else {
@@ -1581,7 +1610,16 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     private void CSEliminarEditorialBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSEliminarEditorialBTActionPerformed
         // TODO add your handling code here:
         String publisher = CSEditorialesCB.getItemAt(CSEditorialesCB.getSelectedIndex());
-        CSEditorialesTA.setText(CSEditorialesTA.getText().replace(publisher + "\n", ""));
+        if(publisher.equals("Seleccione uno...")){
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una editorial");
+            return;
+        }
+        if (!CSEditorialesTA.getText().contains(publisher)) { 
+            CSEditorialesTA.setText(CSEditorialesTA.getText().replace(publisher + "\n", ""));
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "La Editorial no esta en la lista.");
+        }
+        
     }//GEN-LAST:event_CSEliminarEditorialBTActionPerformed
 
     private void CSComprarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CSComprarBTActionPerformed
@@ -1660,10 +1698,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
             for (Object[] fila : datos) {
                 model.addRow(fila);
             }
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
         } else {
-            if (response.getStatus() != core.controllers.utils.Status.NO_CONTENT) {
+            //if (response.getStatus() != core.controllers.utils.Status.NO_CONTENT) {
                  javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
-            }
+            //}
         }
     }//GEN-LAST:event_ShowLibrosConsultarBTActionPerformed
  
@@ -1691,6 +1730,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CAAutorConsultarBTActionPerformed
   
     private void CAFormatoConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CAFormatoConsultarBTActionPerformed
+        int index = CAFormatoCB.getSelectedIndex();
+        if (index == -1 || CAFormatoCB.getSelectedItem().equals("Seleccione uno...")) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un formato.");
+            return;
+        }
         String format = CAFormatoCB.getItemAt(CAFormatoCB.getSelectedIndex());
         DefaultTableModel model = (DefaultTableModel) CATable1.getModel();
         model.setRowCount(0);
@@ -1703,7 +1747,9 @@ public class MegaferiaFrame extends javax.swing.JFrame {
             for (Object[] row : rowsData) {
                 model.addRow(row); 
             }
-        }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+        } 
     }//GEN-LAST:event_CAFormatoConsultarBTActionPerformed
 
     private void CATable2ConsultarBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CATable2ConsultarBTActionPerformed
@@ -1715,9 +1761,11 @@ public class MegaferiaFrame extends javax.swing.JFrame {
         if (response.isSuccess()) {
             ArrayList<Author> authorsMax = (ArrayList<Author>) response.getObject();
             for (Author author : authorsMax) {
-                model.addRow(new Object[]{author.getId(), author.getFullname()});
+                model.addRow(new Object[]{author.getId(), author.getFullname(), AuthorGetBookQuantity.getBookQuantity(author)});
             }
-        }
+        }else {
+            javax.swing.JOptionPane.showMessageDialog(this, response.getMessage());
+        } 
         
     }//GEN-LAST:event_CATable2ConsultarBTActionPerformed
 
